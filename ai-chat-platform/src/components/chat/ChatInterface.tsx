@@ -9,6 +9,7 @@ import ChatSidebar from './ChatSidebar';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import ModelSelector from './ModelSelector';
+import CharacterSelector from './CharacterSelector';
 import UserSetup from './UserSetup';
 import { MessageCircle, Settings, Sparkles } from 'lucide-react';
 
@@ -114,7 +115,8 @@ export default function ChatInterface() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <CharacterSelector />
               <ModelSelector />
               <a
                 href="/admin"

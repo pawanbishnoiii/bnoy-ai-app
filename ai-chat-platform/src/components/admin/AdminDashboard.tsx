@@ -12,8 +12,10 @@ import {
   BarChart3,
   LogOut,
   Eye,
-  EyeOff 
+  EyeOff,
+  Wand2 
 } from 'lucide-react';
+import AICharacterCreator from './AICharacterCreator';
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -157,6 +159,7 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
+    { id: 'characters', name: 'AI Characters', icon: Wand2 },
     { id: 'users', name: 'Users', icon: Users },
     { id: 'models', name: 'AI Models', icon: Bot },
     { id: 'chats', name: 'Chats', icon: MessageSquare },
@@ -243,6 +246,7 @@ export default function AdminDashboard() {
 function AdminContent({ activeTab }: { activeTab: string }) {
   const content = {
     dashboard: <DashboardTab />,
+    characters: <AICharacterCreator />,
     users: <UsersTab />,
     models: <ModelsTab />,
     chats: <ChatsTab />,

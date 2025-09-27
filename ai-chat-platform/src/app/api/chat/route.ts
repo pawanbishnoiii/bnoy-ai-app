@@ -40,11 +40,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get system prompt (default or specified)
+    const systemPrompt = await db.systemPrompt.findFirst({
+      where: { isDefault: true },
+    });
+
     // Format messages for OpenRouter
-    const chatMessages: ChatMessage[] = chatWithMessages.messages.map(msg => ({
+    const chatMessages: ChatMessage[] = [];
+    
+    // Add system prompt if available
+    if (systemPrompt) {
+      chatMessages.push({
+        role: 'system',
+        content: systemPrompt.content,
+      });
+    }
+    
+    // Add conversation history
+    chatMessages.push(...chatWithMessages.messages.map(msg => ({
       role: msg.role as 'user' | 'assistant' | 'system',
       content: msg.content,
-    }));
+    })));
 
     // Get AI response
     const aiResponse = await openRouterClient.chatCompletion(
