@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for chat platform
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String?  @unique
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+  
+  // Relations
+  chats     Chat[]
+  
+  @@map("users")
+}
+
+// Chat sessions
+model Chat {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String   @default("New Chat")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+  
+  @@map("chats")
+}
+
+// Individual messages in chats
+model Message {
+  id        String   @id @default(cuid())
+  chatId    String
+  role      String   // "user" | "assistant" | "system"
+  content   String
+  modelUsed String?  // Which AI model was used
+  timestamp DateTime @default(now())
+  
+  // Relations
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  
+  @@map("messages")
+}
+
+// AI Models configuration
+model AIModel {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  provider    String  // "openrouter", "openai", etc.
+  modelId     String  // actual model identifier for API
+  description String?
+  isActive    Boolean @default(true)
+  isDefault   Boolean @default(false)
+  maxTokens   Int?    @default(4096)
+  
+  // Relations
+  systemPrompts SystemPrompt[]
+  
+  @@map("ai_models")
+}
+
+// API Keys management
+model APIKey {
+  id           String  @id @default(cuid())
+  provider     String  @unique
+  keyName      String
+  encryptedKey String
+  isActive     Boolean @default(true)
+  createdAt    DateTime @default(now())
+  
+  @@map("api_keys")
+}
+
+// System prompts for different models
+model SystemPrompt {
+  id        String  @id @default(cuid())
+  name      String
+  content   String
+  modelId   String?
+  isDefault Boolean @default(false)
+  createdAt DateTime @default(now())
+  
+  // Relations
+  model     AIModel? @relation(fields: [modelId], references: [id], onDelete: SetNull)
+  
+  @@map("system_prompts")
+}
+
+// Admin settings
+model AdminSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  
+  @@map("admin_settings")
+}
