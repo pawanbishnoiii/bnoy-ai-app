@@ -49,7 +49,7 @@ export default function ChatMessages() {
               delay: index * 0.05,
               ease: 'easeOut'
             }}
-            className={`flex gap-4 chat-message ${
+            className={`flex gap-2 sm:gap-4 chat-message ${
               message.role === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
@@ -64,7 +64,7 @@ export default function ChatMessages() {
               </motion.div>
             )}
 
-            <div className={`max-w-[80%] group ${
+            <div className={`max-w-[85%] sm:max-w-[80%] group ${
               message.role === 'user' ? 'order-last' : ''
             }`}>
               <div className={`p-4 ${

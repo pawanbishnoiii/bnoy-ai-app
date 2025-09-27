@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useChatStore } from '@/store/chat';
+import { useChatShortcuts } from '@/hooks/useKeyboardShortcuts';
 import ChatSidebar from './ChatSidebar';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
@@ -11,8 +13,18 @@ import UserSetup from './UserSetup';
 import { MessageCircle, Settings, Sparkles } from 'lucide-react';
 
 export default function ChatInterface() {
-  const { user, currentChat, isLoading, setUser } = useChatStore();
+  const { user, currentChat, isLoading, setUser, createNewChat } = useChatStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const router = useRouter();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Keyboard shortcuts
+  useChatShortcuts({
+    newChat: createNewChat,
+    toggleSidebar: () => setSidebarOpen(!sidebarOpen),
+    focusInput: () => inputRef.current?.focus(),
+    openSettings: () => router.push('/settings'),
+  });
 
   useEffect(() => {
     // Check for existing user in localStorage
@@ -45,15 +57,26 @@ export default function ChatInterface() {
       {/* Sidebar */}
       <AnimatePresence>
         {sidebarOpen && (
-          <motion.div
-            initial={{ x: -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -300, opacity: 0 }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="w-80 relative z-10"
-          >
-            <ChatSidebar onClose={() => setSidebarOpen(false)} />
-          </motion.div>
+          <>
+            {/* Mobile overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            />
+            
+            <motion.div
+              initial={{ x: -300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="w-80 relative z-50 lg:z-10"
+            >
+              <ChatSidebar onClose={() => setSidebarOpen(false)} />
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
@@ -109,7 +132,7 @@ export default function ChatInterface() {
           {currentChat ? (
             <>
               <ChatMessages />
-              <ChatInput />
+              <ChatInput ref={inputRef} />
             </>
           ) : (
             <WelcomeScreen />
@@ -121,7 +144,7 @@ export default function ChatInterface() {
 }
 
 function WelcomeScreen() {
-  const { user, createNewChat, selectedModel } = useChatStore();
+  const { user, startChatWithMessage, selectedModel } = useChatStore();
 
   const suggestions = [
     "Explain quantum computing in simple terms",
@@ -172,8 +195,7 @@ function WelcomeScreen() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => {
-                // Will implement this when we create ChatInput
-                console.log('Suggestion clicked:', suggestion);
+                startChatWithMessage(suggestion);
               }}
               className="glass-effect p-4 rounded-xl text-left hover:bg-white/10 transition-all duration-300"
             >

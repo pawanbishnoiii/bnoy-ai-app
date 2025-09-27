@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { useChatStore } from '@/store/chat';
 import { Send, Mic, Paperclip, Square } from 'lucide-react';
 
-export default function ChatInput() {
+const ChatInput = forwardRef<HTMLTextAreaElement>((props, ref) => {
   const [message, setMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -33,7 +33,20 @@ export default function ChatInput() {
       textareaRef.current.style.height = 'auto';
     }
 
-    await sendMessage(messageToSend);
+    try {
+      await sendMessage(messageToSend);
+      // Success feedback can be added here
+    } catch (error) {
+      // Show error toast
+      (window as any).showToast?.({
+        type: 'error',
+        title: 'Failed to send message',
+        description: 'Please check your connection and try again',
+      });
+      
+      // Restore the message
+      setMessage(messageToSend);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -102,7 +115,7 @@ export default function ChatInput() {
               {/* Text Input */}
               <div className="flex-1">
                 <textarea
-                  ref={textareaRef}
+                  ref={ref || textareaRef}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -196,4 +209,8 @@ export default function ChatInput() {
       </div>
     </div>
   );
-}
+});
+
+ChatInput.displayName = 'ChatInput';
+
+export default ChatInput;

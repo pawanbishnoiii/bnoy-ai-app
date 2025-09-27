@@ -49,6 +49,7 @@ interface ChatState {
   // API Actions
   sendMessage: (content: string) => Promise<void>;
   createNewChat: () => Promise<void>;
+  startChatWithMessage: (content: string) => Promise<void>;
   loadChatHistory: () => Promise<void>;
   loadChat: (chatId: string) => Promise<void>;
 }
@@ -175,6 +176,11 @@ export const useChatStore = create<ChatState>()(
 
       createNewChat: async () => {
         set({ currentChat: null });
+      },
+
+      startChatWithMessage: async (content: string) => {
+        set({ currentChat: null });
+        await get().sendMessage(content);
       },
 
       loadChatHistory: async () => {

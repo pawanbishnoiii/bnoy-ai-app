@@ -128,7 +128,7 @@ export default function ModelSelector() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-              className="absolute right-0 top-full mt-2 w-80 glass-effect rounded-xl border border-white/20 overflow-hidden z-50"
+              className="absolute right-0 top-full mt-2 w-80 max-w-[90vw] glass-effect rounded-xl border border-white/20 overflow-hidden z-50"
             >
               <div className="p-3 border-b border-white/10">
                 <h3 className="text-white font-medium text-sm">Select AI Model</h3>
