@@ -6,7 +6,7 @@ import { extractTitleFromMessage } from '@/lib/utils';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, chatId, username, modelId } = body;
+    const { message, chatId, username, modelId, systemPrompt } = body;
 
     if (!message || !username) {
       return NextResponse.json(
@@ -40,16 +40,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Format messages for OpenRouter
-    const chatMessages: ChatMessage[] = chatWithMessages.messages.map(msg => ({
+    // Format messages for OpenRouter with system prompt
+    const chatMessages: ChatMessage[] = [];
+    
+    // Add system prompt if provided
+    if (systemPrompt) {
+      chatMessages.push({
+        role: 'system',
+        content: systemPrompt,
+      });
+    }
+    
+    // Add chat history
+    chatMessages.push(...chatWithMessages.messages.map(msg => ({
       role: msg.role as 'user' | 'assistant' | 'system',
       content: msg.content,
-    }));
+    })));
 
+    console.log('API Key exists:', !!process.env.OPENROUTER_API_KEY);
+    console.log('Using model:', modelId || 'huggingface/microsoft/DialoGPT-medium');
+    console.log('System prompt provided:', !!systemPrompt);
+    
     // Get AI response
     const aiResponse = await openRouterClient.chatCompletion(
       chatMessages,
-      modelId || 'microsoft/phi-3-mini-128k-instruct:free'
+      modelId || 'huggingface/microsoft/DialoGPT-medium'
     );
 
     // Save AI response to database

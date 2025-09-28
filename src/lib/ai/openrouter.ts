@@ -35,18 +35,24 @@ export class OpenRouterClient {
 
   async chatCompletion(
     messages: ChatMessage[],
-    model = 'microsoft/phi-3-mini-128k-instruct:free', // GPT OSS 20B equivalent free model
-    maxTokens = 4096,
-    temperature = 0.7
+    model = 'huggingface/microsoft/DialoGPT-medium', // Free conversational model
+    maxTokens = 2048,
+    temperature = 0.8
   ): Promise<string> {
     try {
+      console.log('Making OpenRouter request with:', {
+        model,
+        messageCount: messages.length,
+        apiKeyPresent: !!this.apiKey
+      });
+
       const response = await fetch(`${this.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-          'X-Title': process.env.NEXT_PUBLIC_APP_NAME || 'AI Chat Platform',
+          'X-Title': process.env.NEXT_PUBLIC_APP_NAME || 'BNOY AI Chat Platform',
         },
         body: JSON.stringify({
           model,
@@ -59,6 +65,13 @@ export class OpenRouterClient {
 
       if (!response.ok) {
         const errorData = await response.text();
+        console.error('OpenRouter API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorData,
+          model,
+          apiKeyLength: this.apiKey.length
+        });
         throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
       }
 

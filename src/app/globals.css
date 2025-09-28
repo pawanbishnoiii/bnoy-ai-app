@@ -1,28 +1,27 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --fire-primary: #f97316;
+  --fire-secondary: #dc2626;
+  --fire-accent: #ec4899;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Inter', var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  font-variant: normal;
 }
 
 /* Custom scrollbar */
@@ -56,17 +55,17 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Gradient text animation */
+/* Fire gradient text animation */
 .gradient-text {
-  background: linear-gradient(-45deg, #3b82f6, #8b5cf6, #06b6d4, #10b981);
+  background: linear-gradient(-45deg, #f97316, #dc2626, #ec4899, #f59e0b);
   background-size: 400% 400%;
-  animation: gradientShift 4s ease-in-out infinite;
+  animation: fireShift 3s ease-in-out infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-@keyframes gradientShift {
+@keyframes fireShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -81,4 +80,55 @@ body {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
   100% { transform: translateY(0px); }
+}
+
+/* Fire glow effect */
+.fire-glow {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(220, 38, 38, 0.2);
+}
+
+/* Romantic pulse */
+.romantic-pulse {
+  animation: romanticPulse 2s ease-in-out infinite;
+}
+
+@keyframes romanticPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+/* Fire particle animation */
+.fire-particle {
+  animation: fireParticle 4s ease-in-out infinite;
+}
+
+@keyframes fireParticle {
+  0% { 
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-20px) scale(1.1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translateY(-40px) scale(0.8);
+    opacity: 0.3;
+  }
+}
+
+/* Romantic heart beat */
+.heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
