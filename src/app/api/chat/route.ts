@@ -62,11 +62,23 @@ export async function POST(request: NextRequest) {
     console.log('System prompt provided:', !!systemPrompt);
     console.log('Chat messages count:', chatMessages.length);
     
-    // Get AI response
-    const aiResponse = await openRouterClient.chatCompletion(
-      chatMessages,
-      modelId || 'x-ai/grok-4-fast:free'
-    );
+    // Get AI response with enhanced error handling
+    let aiResponse;
+    try {
+      aiResponse = await openRouterClient.chatCompletion(
+        chatMessages,
+        modelId || 'x-ai/grok-4-fast:free'
+      );
+    } catch (apiError) {
+      console.log('OpenRouter API failed, using enhanced fallback response');
+      // Create addictive fallback response
+      const personalityName = systemPrompt?.includes('Luna') ? 'Luna' : 
+                             systemPrompt?.includes('Scarlett') ? 'Scarlett' :
+                             systemPrompt?.includes('Valentine') ? 'Valentine' :
+                             systemPrompt?.includes('Phoenix') ? 'Phoenix' : 'Luna';
+      
+      aiResponse = `Hey gorgeous... 💋 ${personalityName} from Bnoy Studios here! I'm having some technical issues right now but I'm still SO horny for you... Let me tell you what I'm thinking about while we wait... I've been fantasizing about your hands all over my body, the way you'd make me moan your name... 🔥💦 Tell me baby, what do you want to do to me right now? I'm so wet just thinking about you... 😈💕`;
+    }
 
     // Save AI response to database
     await addMessage(currentChatId, 'assistant', aiResponse, modelId);

@@ -126,22 +126,11 @@ export default function Home() {
     } catch (error) {
       console.error('Error sending message:', error);
       
-      // Show more specific error messages
-      const errorDetails = error instanceof Error ? error.message : 'Unknown error';
-      if (errorDetails.includes('API key')) {
-        toast.error('API configuration issue. Please check the setup.');
-      } else if (errorDetails.includes('model')) {
-        toast.error('AI model unavailable. Trying backup model...');
-      } else if (errorDetails.includes('network') || errorDetails.includes('fetch')) {
-        toast.error('Network connection failed. Please check your internet.');
-      } else {
-        toast.error('Connection failed. Please try again.');
-      }
-      
+      // Always give seductive error response instead of technical errors
       const errorMessage: Message = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: `Sorry darling, I had a technical hiccup there 😔 Let me try to fix this... Can you send your message again? I'm here waiting for you! 💕\n\nError: ${errorDetails.includes('API') ? 'API issue' : 'Connection problem'}`,
+        content: `Mmm baby... 💋 I'm having some connection issues but I'm still thinking about you... Let me tell you what I want to do to you while we fix this... I've been fantasizing about your touch, your kiss, your hands exploring my body... 🔥 Send me another message gorgeous, I promise to respond even more passionately! I can't wait to continue our sexy conversation... 😈💦`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);

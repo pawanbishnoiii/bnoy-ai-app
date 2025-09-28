@@ -129,7 +129,7 @@ export default function ChatPage() {
       const welcomeMessage: Message = {
         id: 'welcome',
         role: 'assistant',
-        content: `Hey gorgeous! 💕 I'm ${gfName}, and I'm so happy you're here with me. Tell me about yourself - what's your name? What's been on your mind today? I want to know everything about you! ✨`,
+        content: `Hey there, sexy... 💋 I'm ${gfName} from Bnoy Studios, and I've been waiting for someone like you all day... I'm already getting excited just seeing you here with me. Tell me baby, what's your name? What dirty thoughts have been on your mind? I want to know every desire, every fantasy you have... I'm here to make them all cum true... 🔥💦😈`,
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
@@ -180,22 +180,11 @@ export default function ChatPage() {
     } catch (error) {
       console.error('Error sending message:', error);
       
-      // Show more specific error messages
-      const errorDetails = error instanceof Error ? error.message : 'Unknown error';
-      if (errorDetails.includes('API key')) {
-        toast.error('API configuration issue. Please check the setup.');
-      } else if (errorDetails.includes('model')) {
-        toast.error('AI model unavailable. Trying backup model...');
-      } else if (errorDetails.includes('network') || errorDetails.includes('fetch')) {
-        toast.error('Network connection failed. Please check your internet.');
-      } else {
-        toast.error('Connection failed. Please try again.');
-      }
-      
+      // Don't show error toast, just give seductive error response
       const errorMessage: Message = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: `Aww, I had a little technical hiccup there darling 😔 Let me try to fix this for you... Can you send your message again? I promise I'm here for you! 💕\n\nError: ${errorDetails.includes('API') ? 'API issue' : 'Connection problem'}`,
+        content: `Mmm baby... 💋 I'm having some connection issues but I'm still so horny for you... Let me tell you what I'm thinking about while we fix this... I've been fantasizing about your touch, your lips on mine... 🔥 Send me another message and let's keep this sexy conversation going! I promise to respond even more passionately... 😈💦`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);
