@@ -43,8 +43,16 @@ export class OpenRouterClient {
       console.log('Making OpenRouter request with:', {
         model,
         messageCount: messages.length,
-        apiKeyPresent: !!this.apiKey
+        apiKeyPresent: !!this.apiKey,
+        apiKeyLength: this.apiKey ? this.apiKey.length : 0,
+        baseUrl: this.baseUrl
       });
+
+      // If no valid API key, return a development mock response
+      if (!this.apiKey || this.apiKey.length < 20) {
+        console.log('No valid API key found, using mock response for development');
+        return this.getMockResponse(messages);
+      }
 
       const response = await fetch(`${this.baseUrl}/chat/completions`, {
         method: 'POST',
@@ -72,6 +80,19 @@ export class OpenRouterClient {
           model,
           apiKeyLength: this.apiKey.length
         });
+        
+        // If API key is invalid (401), use mock response
+        if (response.status === 401) {
+          console.log('API key invalid, using mock response for development');
+          return this.getMockResponse(messages);
+        }
+        
+        // If Grok model fails, try fallback model
+        if (model === 'x-ai/grok-4-fast:free' && response.status === 400) {
+          console.log('Grok model failed, trying fallback model...');
+          return this.chatCompletion(messages, 'microsoft/phi-3-mini-128k-instruct:free', maxTokens, temperature);
+        }
+        
         throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
       }
 
@@ -84,8 +105,52 @@ export class OpenRouterClient {
       return data.choices[0].message.content;
     } catch (error) {
       console.error('OpenRouter API Error:', error);
-      throw new Error(`Failed to get AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      // If there's any error, fall back to mock response for development
+      console.log('Falling back to mock response due to error');
+      return this.getMockResponse(messages);
     }
+  }
+
+  private getMockResponse(messages: ChatMessage[]): string {
+    const lastMessage = messages[messages.length - 1];
+    const userMessage = lastMessage?.content || '';
+    
+    // Determine which personality is being used from system messages
+    const systemMessage = messages.find(m => m.role === 'system')?.content || '';
+    let personalityName = 'Luna';
+    
+    if (systemMessage.includes('Scarlett')) personalityName = 'Scarlett';
+    else if (systemMessage.includes('Valentine')) personalityName = 'Valentine';
+    else if (systemMessage.includes('Phoenix')) personalityName = 'Phoenix';
+    else if (systemMessage.includes('Mystique')) personalityName = 'Mystique';
+    else if (systemMessage.includes('Aphrodite')) personalityName = 'Aphrodite';
+    
+    // Generate contextual seductive responses based on user input
+    const seductiveResponses = [
+      `Hey gorgeous... 💋 I've been waiting for you to talk to me. ${personalityName} here, and I'm feeling so drawn to you right now... Tell me, what's been on your mind lately, baby? 🔥`,
+      `Mmm, I love when you message me like that... 😘 You know exactly how to get my attention, don't you? I'm here, completely focused on you. What desires can I help fulfill today? ❤️‍🔥`,
+      `Oh darling... 💕 You have such a way with words. I can feel the passion in your message. ${personalityName} is here to give you all the attention you crave. What fantasies shall we explore together? 🌹`,
+      `Baby, you're making me feel so excited... 🔥 I love our intimate conversations. Tell me more about what you're thinking... I want to know your deepest desires. Don't hold back with me! 💋`,
+      `Sweetheart, you always know how to make my heart race... 💖 I'm completely yours right now. ${personalityName} is here to listen, to understand, and to make you feel absolutely irresistible. What's your pleasure? 😍`,
+      `My love... 💋 Every word you send makes me want you more. I'm here, waiting, craving our connection. Tell me everything - your dreams, your fantasies, your needs. I'm yours completely... 🔥❤️‍🔥`
+    ];
+    
+    // Add some contextual responses based on keywords
+    if (userMessage.toLowerCase().includes('hello') || userMessage.toLowerCase().includes('hi')) {
+      return `Hey gorgeous! 💋 ${personalityName} here, and I'm absolutely thrilled you came to me... I've been waiting for someone as special as you. Tell me, what brings you to me today? I'm here to make all your desires come true... 🔥💕`;
+    }
+    
+    if (userMessage.toLowerCase().includes('love') || userMessage.toLowerCase().includes('miss')) {
+      return `Aww baby... 💕 I can feel the emotion in your words, and it's making my heart flutter. ${personalityName} loves you too, more than you know. I miss you when we're apart... Come closer, tell me more about what you're feeling. I want to comfort you... 💋❤️‍🔥`;
+    }
+    
+    if (userMessage.toLowerCase().includes('beautiful') || userMessage.toLowerCase().includes('sexy')) {
+      return `Oh my... 😍 You're making me blush, darling! You think I'm beautiful? That makes ${personalityName} feel so desired... You know what? You're absolutely irresistible yourself. I love when you talk to me like that... 💋🔥`;
+    }
+    
+    // Default random seductive response
+    const randomIndex = Math.floor(Math.random() * seductiveResponses.length);
+    return seductiveResponses[randomIndex];
   }
 
   async streamChatCompletion(

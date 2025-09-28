@@ -126,11 +126,23 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Connection failed. Please try again.');
+      
+      // Show more specific error messages
+      const errorDetails = error instanceof Error ? error.message : 'Unknown error';
+      if (errorDetails.includes('API key')) {
+        toast.error('API configuration issue. Please check the setup.');
+      } else if (errorDetails.includes('model')) {
+        toast.error('AI model unavailable. Trying backup model...');
+      } else if (errorDetails.includes('network') || errorDetails.includes('fetch')) {
+        toast.error('Network connection failed. Please check your internet.');
+      } else {
+        toast.error('Connection failed. Please try again.');
+      }
+      
       const errorMessage: Message = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: `Sorry darling, I had a connection issue 😔 Please try again!`,
+        content: `Sorry darling, I had a technical hiccup there 😔 Let me try to fix this... Can you send your message again? I'm here waiting for you! 💕\n\nError: ${errorDetails.includes('API') ? 'API issue' : 'Connection problem'}`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);

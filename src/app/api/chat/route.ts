@@ -58,13 +58,14 @@ export async function POST(request: NextRequest) {
     })));
 
     console.log('API Key exists:', !!process.env.OPENROUTER_API_KEY);
-    console.log('Using model:', modelId || 'huggingface/microsoft/DialoGPT-medium');
+    console.log('Using model:', modelId || 'x-ai/grok-4-fast:free');
     console.log('System prompt provided:', !!systemPrompt);
+    console.log('Chat messages count:', chatMessages.length);
     
     // Get AI response
     const aiResponse = await openRouterClient.chatCompletion(
       chatMessages,
-      modelId || 'huggingface/microsoft/DialoGPT-medium'
+      modelId || 'x-ai/grok-4-fast:free'
     );
 
     // Save AI response to database
