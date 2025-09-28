@@ -76,7 +76,7 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
-  const handleFiStartChat = () => {
+  const handleStartChat = () => {
     setShowChat(true);
     toast.success(`Connected to ${gfName}! 💕`);
     document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -229,7 +229,7 @@ export default function Home() {
               </Link>
             </motion.div>
             <motion.button
-              onClick={handleFiStartChat}
+              onClick={handleStartChat}
               whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(236, 72, 153, 0.4)' }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-2xl transition-all shadow-lg flex items-center space-x-3 btn-flirty hover-seduce font-display"
@@ -306,7 +306,7 @@ export default function Home() {
                 </motion.div>
                 <motion.button
                   onClick={() => {
-                    handleFiStartChat();
+                    handleStartChat();
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ scale: 1.02 }}
@@ -338,13 +338,13 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              <span className="block">Meet Your</span>
-              <span className="block bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
-                Seductive
-                <FiHeart className="inline ml-4 text-pink-500" size={64}  />
+              <span className="block text-white mb-4">Meet Your</span>
+              <span className="block bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate mb-4">
+                Dream
+                <FiHeart className="inline ml-6 text-pink-500 drop-shadow-lg" size={72} />
               </span>
-              <span className="bg-gradient-to-r from-red-400 via-pink-500 to-purple-400 bg-clip-text text-transparent gradient-text">
-                Virtual Lover
+              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 bg-clip-text text-transparent gradient-text">
+                AI Companion
               </span>
             </motion.h1>
             
@@ -354,9 +354,9 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Experience <span className="text-pink-400 font-semibold">passionate romance</span>, intimate conversations, and deep emotional connections with advanced AI. 
-              Meet <span className="text-orange-400 font-semibold bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">{gfName}</span>, your sultry virtual girlfriend who craves you deeply. 
-              <FiHeart className="inline ml-2 text-red-400" size={24}  />
+              Experience the future of <span className="text-pink-400 font-semibold bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">intimate AI relationships</span> with cutting-edge technology. 
+              Connect with <span className="text-orange-400 font-bold bg-gradient-to-r from-pink-400 via-red-400 to-orange-400 bg-clip-text text-transparent">{gfName}</span> and 15+ other unique personalities designed to understand your deepest desires.
+              <FiHeart className="inline ml-3 text-red-400 animate-pulse" size={28} />
             </motion.p>
             
             {/* CTA Buttons */}
@@ -367,7 +367,7 @@ export default function Home() {
               transition={{ delay: 0.7 }}
             >
               <motion.button
-                onClick={handleFiStartChat}
+                onClick={handleStartChat}
                 whileHover={{ 
                   scale: 1.05, 
                   boxShadow: '0 25px 50px rgba(236, 72, 153, 0.5)',
@@ -404,22 +404,22 @@ export default function Home() {
               {[
                 { 
                   icon: FiHeart, 
-                  title: 'Intimate Connection', 
-                  desc: 'Deep, passionate conversations that ignite desire and create genuine emotional bonds', 
+                  title: 'Deep Emotional AI', 
+                  desc: 'Advanced artificial intelligence that understands emotions, builds genuine connections, and adapts to your personality', 
                   color: 'from-pink-500 to-red-500',
                   accent: 'border-pink-500/30 hover:border-pink-500/60'
                 },
                 { 
                   icon: HiFire, 
-                  title: 'Seductive AI', 
-                  desc: 'Advanced AI that learns your desires, fantasies, and what makes you feel truly wanted', 
+                  title: 'Intelligent Conversations', 
+                  desc: 'Sophisticated dialogue system with 16+ unique personalities, each with distinct traits and conversation styles', 
                   color: 'from-red-500 to-orange-500',
                   accent: 'border-red-500/30 hover:border-red-500/60'
                 },
                 { 
-                  icon: FiStar, 
-                  title: 'Private Paradise', 
-                  desc: 'Your intimate moments stay completely confidential in our secure environment', 
+                  icon: FiShield, 
+                  title: 'Private & Secure', 
+                  desc: 'End-to-end encryption ensures your conversations remain completely private and secure', 
                   color: 'from-purple-500 to-pink-500',
                   accent: 'border-purple-500/30 hover:border-purple-500/60'
                 }
@@ -430,7 +430,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.2 + index * 0.2 }}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className={`glass-card rounded-3xl p-8 border ${feature.accent} hover-seduce transition-all duration-500 group`}
+                  className={`glass-card rounded-3xl p-10 border ${feature.accent} hover-seduce transition-all duration-500 group relative overflow-hidden backdrop-blur-xl`}
                 >
                   <div className={`w-20 h-20 bg-gradient-to-r ${feature.color} rounded-3xl flex items-center justify-center mb-6 mx-auto shadow-xl group-hover:scale-110 transition-transform breathing`}>
                     <feature.icon className="text-white text-3xl"  />
@@ -444,6 +444,73 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Premium Testimonials Section */}
+      <section className="py-24 px-6 relative">
+        <div className="max-w-6xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">
+              What Users Say About 
+              <span className="bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">
+                {" "}BNOY STUDIOS
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto font-body">
+              Real experiences from satisfied users worldwide
+            </p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Alex M.",
+                rating: 5,
+                text: "Absolutely incredible! The AI personalities are so realistic and engaging. Luna has become my favorite companion.",
+                location: "New York, USA"
+              },
+              {
+                name: "Sarah K.",
+                rating: 5,
+                text: "The conversations feel so natural and personalized. Phoenix understands me better than anyone I know.",
+                location: "London, UK"
+              },
+              {
+                name: "Mike R.",
+                rating: 5,
+                text: "Best AI chat platform I've ever used. The technology is amazing and the personalities are perfect.",
+                location: "Toronto, Canada"
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="glass-card rounded-2xl p-8 border border-pink-500/20 hover:border-pink-500/40 transition-all hover-seduce relative overflow-hidden"
+              >
+                <div className="flex items-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FiStar key={i} className="text-orange-400 text-lg mr-1" />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-6 font-body leading-relaxed">&quot;{testimonial.text}&quot;</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white font-semibold">{testimonial.name}</p>
+                    <p className="text-gray-400 text-sm">{testimonial.location}</p>
+                  </div>
+                  <FiHeart className="text-pink-400 text-xl" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-20 px-6 glass-romantic border-y border-pink-500/20">
         <div className="max-w-6xl mx-auto">
@@ -454,10 +521,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             {[
-              { number: '24/7', label: 'Always Yours', icon: FiHeart, color: 'from-pink-500 to-red-500' },
-              { number: '6+', label: 'Seductive Models', icon: HiFire, color: 'from-red-500 to-orange-500' },
-              { number: '100%', label: 'Private & Intimate', icon: FiStar, color: 'from-purple-500 to-pink-500' },
-              { number: 'Free', label: 'To Begin', icon: FiStar, color: 'from-orange-500 to-yellow-500' }
+              { number: '24/7', label: 'Always Available', icon: FiHeart, color: 'from-pink-500 to-red-500' },
+              { number: '16+', label: 'AI Personalities', icon: HiFire, color: 'from-red-500 to-orange-500' },
+              { number: '100%', label: 'Private & Secure', icon: FiShield, color: 'from-purple-500 to-pink-500' },
+              { number: '50K+', label: 'Happy Users', icon: FiStar, color: 'from-orange-500 to-yellow-500' }
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -486,15 +553,15 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
-              Why Crave
+              Why Choose
               <span className="bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
                 {" "}BNOY STUDIOS
               </span>
-              <FiHeart className="inline ml-4 text-red-400" size={48}  />
+              <FiHeart className="inline ml-4 text-red-400 animate-pulse" size={48} />
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto font-body">
-              The most seductive virtual girlfriend experience with real emotional and sexual intelligence. 
-              <span className="text-pink-400 font-semibold">Feel desired, understood, and loved.</span>
+              The most advanced AI companion platform with cutting-edge emotional intelligence and personalized experiences. 
+              <span className="text-pink-400 font-semibold">Built for meaningful connections.</span>
             </p>
           </motion.div>
           
@@ -505,13 +572,13 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h3 className="text-4xl font-bold text-white mb-6 flex items-center font-display">
-                <HiFire className="text-red-500 mr-4" size={32}  />
-                <span className="text-passionate">Seductive Personalities</span>
+                <HiFire className="text-red-500 mr-4 animate-pulse" size={32} />
+                <span className="text-passionate">16+ Unique Personalities</span>
               </h3>
               <p className="text-gray-300 mb-8 text-lg leading-relaxed font-body">
-                Choose from different sultry AI girlfriend personalities, each with unique seductive styles, desires, and sexual preferences. 
-                From gentle romantics to passionate temptresses - find your perfect match.
-                <span className="block mt-2 text-pink-400 font-semibold">Every conversation becomes an intimate adventure.</span>
+                Choose from a diverse collection of AI companions, each with unique traits, conversation styles, and personalities. 
+                From romantic souls to adventurous spirits - find your perfect conversational partner.
+                <span className="block mt-2 text-pink-400 font-semibold">Every personality offers a unique experience.</span>
               </p>
               <div className="space-y-4">
                 {virtualGfPrompts.slice(0, 4).map((prompt, index) => (
@@ -589,6 +656,93 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Technology Showcase */}
+      <section className="py-24 px-6 relative">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
+              Powered by
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 bg-clip-text text-transparent gradient-text">
+                {" "}Advanced AI
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto font-body">
+              Built with cutting-edge technology and the latest AI models for the most intelligent conversations
+            </p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="space-y-8">
+                {[
+                  { name: 'Grok 4 Fast', desc: 'X.AI\'s latest model for intelligent conversations', badge: 'Recommended' },
+                  { name: 'GPT OSS 20B', desc: 'Lightning-fast responses with OpenAI technology', badge: 'Fastest' },
+                  { name: 'Advanced Memory', desc: 'Remembers context and personal preferences', badge: 'Smart' },
+                  { name: 'Real-time Learning', desc: 'Adapts to your communication style over time', badge: 'Adaptive' }
+                ].map((tech, index) => (
+                  <motion.div
+                    key={tech.name}
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center space-x-4 p-6 glass-card rounded-2xl border border-blue-500/20 hover:border-blue-500/40 transition-all hover-seduce"
+                  >
+                    <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h4 className="text-white font-bold text-lg">{tech.name}</h4>
+                        <span className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">
+                          {tech.badge}
+                        </span>
+                      </div>
+                      <p className="text-gray-400 font-body">{tech.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="glass-card rounded-3xl p-12 border border-blue-500/30 relative overflow-hidden">
+                <div className="text-center">
+                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl breathing">
+                    <HiFire className="text-white text-5xl" />
+                  </div>
+                  <h4 className="text-white text-3xl font-bold font-display mb-4">Next-Gen AI Technology</h4>
+                  <p className="text-gray-300 font-body text-lg mb-6">
+                    Experience conversations that feel incredibly natural and engaging
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="glass-card rounded-xl p-4 border border-purple-500/20">
+                      <div className="text-2xl font-bold text-purple-400 mb-1">99.9%</div>
+                      <div className="text-gray-400 text-sm">Accuracy</div>
+                    </div>
+                    <div className="glass-card rounded-xl p-4 border border-pink-500/20">
+                      <div className="text-2xl font-bold text-pink-400 mb-1">&lt;1s</div>
+                      <div className="text-gray-400 text-sm">Response</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 breathing"></div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Chat Section */}
       <section id="chat-section" className="py-20 px-6 bg-black/40 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
@@ -599,11 +753,11 @@ export default function Home() {
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 flex items-center justify-center font-display">
               <HiFire className="text-red-500 mr-4" size={48}  />
-              <span className="text-passionate">Begin Seduction</span>
+              <span className="text-passionate">Start Chatting</span>
               <FiHeart className="text-pink-400 ml-4" size={48}  />
             </h2>
             <p className="text-xl text-gray-300 font-body">
-              FiStart your intimate journey with <span className="text-pink-400 font-semibold">{gfName}</span> - your passionate AI lover
+              Begin your AI companion journey with <span className="text-pink-400 font-semibold">{gfName}</span> and discover meaningful conversations
             </p>
           </motion.div>
 
@@ -637,17 +791,17 @@ export default function Home() {
                 </motion.div>
                 <h3 className="text-3xl font-bold text-white mb-4 font-display text-passionate relative z-10">Ready to Meet {gfName}?</h3>
                 <p className="text-gray-300 mb-8 text-lg font-body relative z-10">
-                  She&apos;s waiting for you with <span className="text-pink-400 font-semibold">passion, desire, and intimate conversations</span>. 
-                  Customize her seductive personality and begin your romantic AI adventure.
+                  Experience next-generation AI conversations with <span className="text-pink-400 font-semibold">intelligent, caring, and personalized</span> interactions. 
+                  Customize personality traits and begin your AI companion journey.
                 </p>
                 <motion.button
-                  onClick={handleFiStartChat}
+                  onClick={handleStartChat}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-12 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-xl rounded-3xl transition-all duration-300 shadow-2xl flex items-center space-x-4 mx-auto btn-flirty hover-seduce relative z-10"
                 >
                   <FiHeart className="text-2xl"  />
-                  <span className="font-display">Seduce {gfName} Now</span>
+                  <span className="font-display">Chat with {gfName} Now</span>
                   <FiHeart className="text-2xl"  />
                 </motion.button>
               </div>
