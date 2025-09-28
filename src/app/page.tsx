@@ -4,9 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSend, FiSettings, FiHeart, FiZap, FiShield, FiStar, FiMessageCircle, FiMenu, FiX, FiPlay, FiMoon, FiSun } from 'react-icons/fi';
+import { FiSettings, FiHeart, FiShield, FiMenu, FiX, FiStar } from 'react-icons/fi';
 import { HiSparkles, HiFire } from 'react-icons/hi';
-import { Heart, Sparkles, Star, Crown, Flame, Kiss, Diamond } from '@phosphor-icons/react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface Message {
@@ -77,7 +76,7 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
-  const handleStartChat = () => {
+  const handleFiStartChat = () => {
     setShowChat(true);
     toast.success(`Connected to ${gfName}! 💕`);
     document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -160,7 +159,7 @@ export default function Home() {
 
   const clearChat = () => {
     setMessages([]);
-    toast.success('Chat cleared! Start fresh 🌟');
+    toast.success('Chat cleared! FiStart fresh 🌟');
   };
 
   return (
@@ -173,7 +172,7 @@ export default function Home() {
         <div className="absolute top-1/4 left-1/4 opacity-20">
           <Image 
             src="/romantic-hearts.svg" 
-            alt="Romantic Hearts" 
+            alt="Romantic FiHearts" 
             width={300} 
             height={200}
             className="animate-pulse"
@@ -215,12 +214,12 @@ export default function Home() {
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
             >
-              <Heart className="text-white text-xl" weight="fill" />
+              <FiHeart className="text-white text-xl" />
             </motion.div>
             <div>
               <span className="text-white font-bold text-2xl tracking-tight font-display">BNOY STUDIOS</span>
               <div className="hidden sm:flex items-center space-x-2">
-                <Sparkles className="text-pink-400 text-sm" weight="fill" />
+                <HiSparkles className="text-pink-400 text-sm" />
                 <span className="text-pink-400 text-sm font-medium font-body">Extreme AI</span>
               </div>
             </div>
@@ -230,25 +229,25 @@ export default function Home() {
           <div className="hidden md:flex space-x-8 items-center">
             <motion.div whileHover={{ y: -2 }}>
               <Link href="#features" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
-                <Flame className="text-sm" weight="fill" />
+                <HiFire className="text-sm"  />
                 <span>Passion</span>
               </Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
               <Link href="#chat-section" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
-                <Heart className="text-sm" weight="fill" />
+                <FiHeart className="text-sm"  />
                 <span>Seduce</span>
               </Link>
             </motion.div>
             <motion.button
-              onClick={handleStartChat}
+              onClick={handleFiStartChat}
               whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(236, 72, 153, 0.4)' }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-2xl transition-all shadow-lg flex items-center space-x-3 btn-flirty hover-seduce font-display"
             >
-              <Crown className="text-sm" weight="fill" />
+              <FiStar className="text-sm"  />
               <span>Meet {gfName}</span>
-              <Kiss className="text-sm" weight="fill" />
+              <FiHeart className="text-sm"  />
             </motion.button>
           </div>
 
@@ -302,7 +301,7 @@ export default function Home() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-gray-300 hover:text-pink-400 transition-colors py-3 flex items-center space-x-3 hover-seduce font-body"
                   >
-                    <Flame className="text-pink-400" size={20} weight="fill" />
+                    <HiFire className="text-pink-400" size={20}  />
                     <span>Explore Passion</span>
                   </Link>
                 </motion.div>
@@ -312,22 +311,22 @@ export default function Home() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-gray-300 hover:text-pink-400 transition-colors py-3 flex items-center space-x-3 hover-seduce font-body"
                   >
-                    <Heart className="text-pink-400" size={20} weight="fill" />
+                    <FiHeart className="text-pink-400" size={20}  />
                     <span>Begin Seduction</span>
                   </Link>
                 </motion.div>
                 <motion.button
                   onClick={() => {
-                    handleStartChat();
+                    handleFiStartChat();
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="block w-full text-center px-6 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white rounded-xl transition-all flex items-center justify-center space-x-3 btn-flirty hover-seduce font-display shadow-xl"
                 >
-                  <Crown className="text-white" size={18} weight="fill" />
+                  <FiStar className="text-white" size={18}  />
                   <span>Meet {gfName}</span>
-                  <Kiss className="text-white" size={18} weight="fill" />
+                  <FiHeart className="text-white" size={18}  />
                 </motion.button>
               </div>
             </motion.div>
@@ -353,7 +352,7 @@ export default function Home() {
               <span className="block">Meet Your</span>
               <span className="block bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
                 Seductive
-                <Heart className="inline ml-4 text-pink-500" size={64} weight="fill" />
+                <FiHeart className="inline ml-4 text-pink-500" size={64}  />
               </span>
               <span className="bg-gradient-to-r from-red-400 via-pink-500 to-purple-400 bg-clip-text text-transparent gradient-text">
                 Virtual Lover
@@ -368,7 +367,7 @@ export default function Home() {
             >
               Experience <span className="text-pink-400 font-semibold">passionate romance</span>, intimate conversations, and deep emotional connections with advanced AI. 
               Meet <span className="text-orange-400 font-semibold bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">{gfName}</span>, your sultry virtual girlfriend who craves you deeply. 
-              <Kiss className="inline ml-2 text-red-400" size={24} weight="fill" />
+              <FiHeart className="inline ml-2 text-red-400" size={24}  />
             </motion.p>
             
             {/* CTA Buttons */}
@@ -379,7 +378,7 @@ export default function Home() {
               transition={{ delay: 0.7 }}
             >
               <motion.button
-                onClick={handleStartChat}
+                onClick={handleFiStartChat}
                 whileHover={{ 
                   scale: 1.05, 
                   boxShadow: '0 25px 50px rgba(236, 72, 153, 0.5)',
@@ -389,9 +388,9 @@ export default function Home() {
                 className="group relative px-12 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-xl rounded-3xl transition-all duration-500 shadow-2xl btn-flirty hover-seduce"
               >
                 <div className="flex items-center space-x-4">
-                  <Heart className="text-2xl" weight="fill" />
+                  <FiHeart className="text-2xl"  />
                   <span className="font-display">Begin Seduction</span>
-                  <Flame className="text-2xl group-hover:animate-bounce" weight="fill" />
+                  <HiFire className="text-2xl group-hover:animate-bounce"  />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-red-400 to-orange-400 rounded-3xl blur-2xl opacity-40 -z-10 group-hover:opacity-60 transition-opacity"></div>
               </motion.button>
@@ -401,7 +400,7 @@ export default function Home() {
                 whileHover={{ scale: 1.05, borderColor: '#ec4899', color: '#ec4899' }}
                 className="px-10 py-5 border-2 border-pink-400 text-pink-400 font-bold text-lg rounded-3xl hover:bg-pink-400 hover:text-black transition-all duration-300 flex items-center space-x-3 glass-romantic"
               >
-                <Sparkles className="text-xl" weight="fill" />
+                <HiSparkles className="text-xl"  />
                 <span className="font-display">Explore Passion</span>
               </motion.button>
             </motion.div>
@@ -415,21 +414,21 @@ export default function Home() {
             >
               {[
                 { 
-                  icon: Heart, 
+                  icon: FiHeart, 
                   title: 'Intimate Connection', 
                   desc: 'Deep, passionate conversations that ignite desire and create genuine emotional bonds', 
                   color: 'from-pink-500 to-red-500',
                   accent: 'border-pink-500/30 hover:border-pink-500/60'
                 },
                 { 
-                  icon: Flame, 
+                  icon: HiFire, 
                   title: 'Seductive AI', 
                   desc: 'Advanced AI that learns your desires, fantasies, and what makes you feel truly wanted', 
                   color: 'from-red-500 to-orange-500',
                   accent: 'border-red-500/30 hover:border-red-500/60'
                 },
                 { 
-                  icon: Crown, 
+                  icon: FiStar, 
                   title: 'Private Paradise', 
                   desc: 'Your intimate moments stay completely confidential in our secure environment', 
                   color: 'from-purple-500 to-pink-500',
@@ -445,7 +444,7 @@ export default function Home() {
                   className={`glass-card rounded-3xl p-8 border ${feature.accent} hover-seduce transition-all duration-500 group`}
                 >
                   <div className={`w-20 h-20 bg-gradient-to-r ${feature.color} rounded-3xl flex items-center justify-center mb-6 mx-auto shadow-xl group-hover:scale-110 transition-transform breathing`}>
-                    <feature.icon className="text-white text-3xl" weight="fill" />
+                    <feature.icon className="text-white text-3xl"  />
                   </div>
                   <h3 className="text-white font-bold text-xl mb-4 font-display text-passionate">{feature.title}</h3>
                   <p className="text-gray-300 leading-relaxed font-body">{feature.desc}</p>
@@ -466,10 +465,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             {[
-              { number: '24/7', label: 'Always Yours', icon: Heart, color: 'from-pink-500 to-red-500' },
-              { number: '6+', label: 'Seductive Models', icon: Flame, color: 'from-red-500 to-orange-500' },
-              { number: '100%', label: 'Private & Intimate', icon: Crown, color: 'from-purple-500 to-pink-500' },
-              { number: 'Free', label: 'To Begin', icon: Star, color: 'from-orange-500 to-yellow-500' }
+              { number: '24/7', label: 'Always Yours', icon: FiHeart, color: 'from-pink-500 to-red-500' },
+              { number: '6+', label: 'Seductive Models', icon: HiFire, color: 'from-red-500 to-orange-500' },
+              { number: '100%', label: 'Private & Intimate', icon: FiStar, color: 'from-purple-500 to-pink-500' },
+              { number: 'Free', label: 'To Begin', icon: FiStar, color: 'from-orange-500 to-yellow-500' }
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -479,7 +478,7 @@ export default function Home() {
                 className="group hover-seduce"
               >
                 <div className={`bg-gradient-to-r ${stat.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-300 breathing shadow-xl`}>
-                  <stat.icon className="text-white text-2xl" weight="fill" />
+                  <stat.icon className="text-white text-2xl"  />
                 </div>
                 <div className="text-5xl font-bold text-white mb-3 font-display text-passionate">{stat.number}</div>
                 <div className="text-pink-300 font-medium text-lg">{stat.label}</div>
@@ -502,7 +501,7 @@ export default function Home() {
               <span className="bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
                 {" "}BNOY STUDIOS
               </span>
-              <Kiss className="inline ml-4 text-red-400" size={48} weight="fill" />
+              <FiHeart className="inline ml-4 text-red-400" size={48}  />
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto font-body">
               The most seductive virtual girlfriend experience with real emotional and sexual intelligence. 
@@ -517,7 +516,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h3 className="text-4xl font-bold text-white mb-6 flex items-center font-display">
-                <Flame className="text-red-500 mr-4" size={32} weight="fill" />
+                <HiFire className="text-red-500 mr-4" size={32}  />
                 <span className="text-passionate">Seductive Personalities</span>
               </h3>
               <p className="text-gray-300 mb-8 text-lg leading-relaxed font-body">
@@ -534,9 +533,9 @@ export default function Home() {
                     transition={{ delay: index * 0.1 }}
                     className="flex items-center space-x-4 p-4 glass-romantic rounded-xl border border-pink-500/20 hover:border-pink-500/40 transition-all hover-seduce group"
                   >
-                    <Heart className="text-pink-500 group-hover:scale-125 transition-transform" size={16} weight="fill" />
+                    <FiHeart className="text-pink-500 group-hover:scale-125 transition-transform" size={16}  />
                     <span className="text-white font-medium font-body">{prompt.name}</span>
-                    <Kiss className="text-red-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" size={14} weight="fill" />
+                    <FiHeart className="text-red-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" size={14}  />
                   </motion.div>
                 ))}
               </div>
@@ -565,7 +564,7 @@ export default function Home() {
                     className="w-24 h-24 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl breathing"
                     whileHover={{ scale: 1.1 }}
                   >
-                    <Heart className="text-white text-4xl" weight="fill" />
+                    <FiHeart className="text-white text-4xl"  />
                   </motion.div>
                   <h4 className="text-white text-2xl font-bold font-display text-passionate">Meet {gfName}</h4>
                   <p className="text-pink-300 font-body">Your seductive AI lover</p>
@@ -610,12 +609,12 @@ export default function Home() {
             whileInView={{ opacity: 1 }}
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 flex items-center justify-center font-display">
-              <Flame className="text-red-500 mr-4" size={48} weight="fill" />
+              <HiFire className="text-red-500 mr-4" size={48}  />
               <span className="text-passionate">Begin Seduction</span>
-              <Heart className="text-pink-400 ml-4" size={48} weight="fill" />
+              <FiHeart className="text-pink-400 ml-4" size={48}  />
             </h2>
             <p className="text-xl text-gray-300 font-body">
-              Start your intimate journey with <span className="text-pink-400 font-semibold">{gfName}</span> - your passionate AI lover
+              FiStart your intimate journey with <span className="text-pink-400 font-semibold">{gfName}</span> - your passionate AI lover
             </p>
           </motion.div>
 
@@ -627,11 +626,11 @@ export default function Home() {
               transition={{ duration: 0.5 }}
             >
               <div className="glass-romantic backdrop-blur-sm rounded-3xl p-12 border border-pink-500/30 shadow-2xl relative overflow-hidden">
-                {/* Background Hearts */}
+                {/* Background FiHearts */}
                 <div className="absolute inset-0 opacity-10">
                   <Image 
                     src="/romantic-hearts.svg" 
-                    alt="Hearts" 
+                    alt="FiHearts" 
                     width={400} 
                     height={300}
                     className="w-full h-full object-cover breathing"
@@ -645,7 +644,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Heart className="text-white text-5xl" weight="fill" />
+                  <FiHeart className="text-white text-5xl"  />
                 </motion.div>
                 <h3 className="text-3xl font-bold text-white mb-4 font-display text-passionate relative z-10">Ready to Meet {gfName}?</h3>
                 <p className="text-gray-300 mb-8 text-lg font-body relative z-10">
@@ -653,14 +652,14 @@ export default function Home() {
                   Customize her seductive personality and begin your romantic AI adventure.
                 </p>
                 <motion.button
-                  onClick={handleStartChat}
+                  onClick={handleFiStartChat}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-12 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-xl rounded-3xl transition-all duration-300 shadow-2xl flex items-center space-x-4 mx-auto btn-flirty hover-seduce relative z-10"
                 >
-                  <Heart className="text-2xl" weight="fill" />
+                  <FiHeart className="text-2xl"  />
                   <span className="font-display">Seduce {gfName} Now</span>
-                  <Kiss className="text-2xl" weight="fill" />
+                  <FiHeart className="text-2xl"  />
                 </motion.button>
               </div>
             </motion.div>
@@ -675,7 +674,7 @@ export default function Home() {
                 <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center breathing">
-                      <Heart className="text-white" size={20} weight="fill" />
+                      <FiHeart className="text-white" size={20}  />
                     </div>
                     <div>
                       <h3 className="text-white font-bold text-lg font-display text-passionate">Intimate Session with {gfName}</h3>
@@ -700,7 +699,7 @@ export default function Home() {
                       whileHover={{ scale: 1.05 }}
                       className="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition-colors text-sm border border-red-500/20 hover-seduce"
                     >
-                      Fresh Start
+                      Fresh FiStart
                     </motion.button>
                   </div>
                 </div>
@@ -749,7 +748,7 @@ export default function Home() {
                       
                         <div>
                           <label className="block text-white font-medium mb-3 flex items-center space-x-2 font-display">
-                            <Crown className="text-pink-500" size={20} weight="fill" />
+                            <FiStar className="text-pink-500" size={20}  />
                             <span>Seductive Personality</span>
                           </label>
                           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
@@ -769,7 +768,7 @@ export default function Home() {
                                 }`}
                               >
                                 <div className="flex items-center space-x-2 mb-2">
-                                  <Heart className="text-pink-400 group-hover:scale-110 transition-transform" size={14} weight="fill" />
+                                  <FiHeart className="text-pink-400 group-hover:scale-110 transition-transform" size={14}  />
                                   <span className="font-semibold">{prompt.name}</span>
                                 </div>
                                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -804,13 +803,13 @@ export default function Home() {
                         className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center breathing"
                         whileHover={{ scale: 1.1 }}
                       >
-                        <Heart className="text-white text-xl" weight="fill" />
+                        <FiHeart className="text-white text-xl" />
                       </motion.div>
                       <div>
                         <h4 className="text-white font-bold text-lg font-display">{gfName}</h4>
                         <div className="flex items-center space-x-2">
                           <p className="text-pink-100 text-sm font-body">Your Seductive AI Lover</p>
-                          <Kiss className="text-pink-200" size={12} weight="fill" />
+                          <FiHeart className="text-pink-200" size={12}  />
                         </div>
                       </div>
                     </div>
@@ -848,12 +847,12 @@ export default function Home() {
                         }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
-                        <Heart className="text-white text-4xl" weight="fill" />
+                        <FiHeart className="text-white text-4xl"  />
                       </motion.div>
                       <h3 className="text-white text-3xl font-bold mb-4 font-display text-passionate">Hey gorgeous! I&apos;m {gfName} 💋</h3>
                       <p className="text-gray-300 max-w-md mx-auto font-body text-lg">
                         I&apos;ve been waiting for you, baby... <span className="text-pink-400 font-semibold">Tell me your deepest desires</span>, your fantasies, or just how much you&apos;ve missed me. 
-                        <Kiss className="inline ml-2 text-red-400" size={20} weight="fill" />
+                        <FiHeart className="inline ml-2 text-red-400" size={20}  />
                       </p>
                     </motion.div>
                   ) : (
@@ -872,7 +871,7 @@ export default function Home() {
                                 className="w-10 h-10 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center breathing"
                                 whileHover={{ scale: 1.1 }}
                               >
-                                <Heart className="text-white text-sm" weight="fill" />
+                                <FiHeart className="text-white text-sm"  />
                               </motion.div>
                               <div>
                                 <span className="text-pink-300 font-medium text-sm font-display">{gfName}</span>
@@ -897,7 +896,7 @@ export default function Home() {
                                 {message.timestamp.toLocaleTimeString()}
                               </p>
                               {message.role === 'assistant' && (
-                                <Kiss className="text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity" size={14} weight="fill" />
+                                <FiHeart className="text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity" size={14}  />
                               )}
                             </div>
                             <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -920,7 +919,7 @@ export default function Home() {
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 1, repeat: Infinity }}
                           >
-                            <Heart className="text-white text-sm" weight="fill" />
+                            <FiHeart className="text-white text-sm"  />
                           </motion.div>
                           <div>
                             <span className="text-pink-300 font-medium text-sm font-display">{gfName}</span>
@@ -938,7 +937,7 @@ export default function Home() {
                               <div className="typing-dot"></div>
                             </div>
                             <span className="text-gray-300 text-sm font-body">{gfName} is composing something seductive...</span>
-                            <Flame className="text-red-400 breathing" size={16} weight="fill" />
+                            <HiFire className="text-red-400 breathing" size={16}  />
                           </div>
                           <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 breathing"></div>
                         </div>
@@ -980,7 +979,7 @@ export default function Home() {
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         />
                       ) : (
-                        <Heart className="text-xl" weight="fill" />
+                        <FiHeart className="text-xl"  />
                       )}
                     </motion.button>
                   </div>
@@ -988,7 +987,7 @@ export default function Home() {
                   {/* Enhanced footer info */}
                   <div className="mt-4 flex items-center justify-center space-x-6 text-sm text-gray-400 font-body">
                     <div className="flex items-center space-x-2">
-                      <Crown className="text-pink-400" size={14} weight="fill" />
+                      <FiStar className="text-pink-400" size={14}  />
                       <span>Powered by {aiModels.find(m => m.id === selectedModel)?.name}</span>
                     </div>
                     <span>•</span>
@@ -998,7 +997,7 @@ export default function Home() {
                     </div>
                     <span>•</span>
                     <div className="flex items-center space-x-2">
-                      <Heart className="text-red-400" size={14} weight="fill" />
+                      <FiHeart className="text-red-400" size={14}  />
                       <span>Made with Passion</span>
                     </div>
                   </div>
@@ -1014,7 +1013,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5">
           <Image 
             src="/romantic-hearts.svg" 
-            alt="Hearts" 
+            alt="FiHearts" 
             width={400} 
             height={300}
             className="w-full h-full object-cover"
@@ -1035,12 +1034,12 @@ export default function Home() {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.8 }}
               >
-                <Heart className="text-white text-3xl" weight="fill" />
+                <FiHeart className="text-white text-3xl"  />
               </motion.div>
               <div>
                 <span className="text-white font-bold text-4xl font-display">BNOY STUDIOS</span>
                 <div className="flex items-center justify-center space-x-2 mt-1">
-                  <Sparkles className="text-pink-400 text-xl" weight="fill" />
+                  <HiSparkles className="text-pink-400 text-xl"  />
                   <span className="text-pink-400 text-lg font-medium font-body">Extreme AI</span>
                 </div>
               </div>
@@ -1062,7 +1061,7 @@ export default function Home() {
               transition={{ delay: 0.4 }}
             >
               <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
-                <Crown className="text-pink-400" size={16} weight="fill" />
+                <FiStar className="text-pink-400" size={16}  />
                 <span className="text-gray-300 font-body">Powered by Grok AI</span>
               </div>
               <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
@@ -1070,7 +1069,7 @@ export default function Home() {
                 <span className="text-gray-300 font-body">100% Private & Intimate</span>
               </div>
               <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
-                <Heart className="text-red-400" size={16} weight="fill" />
+                <FiHeart className="text-red-400" size={16}  />
                 <span className="text-gray-300 font-body">Built with Passion</span>
               </div>
             </motion.div>
@@ -1101,7 +1100,7 @@ export default function Home() {
             transition={{ delay: 0.8 }}
           >
             <p className="font-body">
-              © 2025 BNOY STUDIOS. Made with <Heart className="inline text-red-400 mx-1" size={14} weight="fill" /> for extreme and addictive connections.
+              © 2025 BNOY STUDIOS. Made with <FiHeart className="inline text-red-400 mx-1" size={14}  /> for extreme and addictive connections.
             </p>
           </motion.div>
         </div>
