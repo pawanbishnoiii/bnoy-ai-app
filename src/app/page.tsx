@@ -1,16 +1,119 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
 
 export default function Home() {
   const [isStarting, setIsStarting] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [systemPrompt, setSystemPrompt] = useState('You are a helpful AI assistant. Be friendly and informative.');
+  const [selectedModel, setSelectedModel] = useState('microsoft/phi-3-mini-128k-instruct:free');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const aiModels = [
+    { id: 'microsoft/phi-3-mini-128k-instruct:free', name: 'Phi-3 Mini (Free)', provider: 'Microsoft' },
+    { id: 'meta-llama/llama-3.1-8b-instruct:free', name: 'Llama 3.1 8B (Free)', provider: 'Meta' },
+    { id: 'google/gemma-2-9b-it:free', name: 'Gemma 2 9B (Free)', provider: 'Google' },
+  ];
+
+  const systemPrompts = [
+    { id: 'default', name: 'Default Assistant', prompt: 'You are a helpful AI assistant. Be friendly and informative.' },
+    { id: 'creative', name: 'Creative Writer', prompt: 'You are a creative writing assistant. Help users with storytelling, poetry, and creative content.' },
+    { id: 'code', name: 'Code Helper', prompt: 'You are a programming assistant. Help users with coding, debugging, and technical questions.' },
+    { id: 'academic', name: 'Academic Tutor', prompt: 'You are an academic tutor. Help students learn and understand complex topics clearly.' },
+  ];
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleStartChat = () => {
     setIsStarting(true);
-    // Navigate to chat page
-    window.location.href = '/chat';
+    setTimeout(() => {
+      setShowChat(true);
+      setIsStarting(false);
+    }, 1000);
+  };
+
+  const sendMessage = async () => {
+    if (!inputMessage.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: inputMessage,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputMessage,
+          username: 'guest_user',
+          modelId: selectedModel,
+          systemPrompt: systemPrompt
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const aiMessage: Message = {
+          id: data.data.messageId || Date.now().toString(),
+          role: 'assistant',
+          content: data.data.message,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } else {
+        throw new Error(data.error || 'Failed to get response');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const clearChat = () => {
+    setMessages([]);
   };
 
   return (
