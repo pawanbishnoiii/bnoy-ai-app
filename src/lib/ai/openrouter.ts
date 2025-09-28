@@ -230,7 +230,7 @@ export const openRouterClient = new OpenRouterClient(
   process.env.OPENROUTER_API_KEY || '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'
 );
 
-// Available models list (updated with Grok and other premium models)
+// Available models list (updated with Grok and GPT OSS)
 export const AVAILABLE_MODELS = [
   {
     id: 'x-ai/grok-4-fast:free',
@@ -239,6 +239,16 @@ export const AVAILABLE_MODELS = [
     provider: 'X.AI',
     maxTokens: 8192,
     isFree: true,
+    isRecommended: true,
+  },
+  {
+    id: 'openai/gpt-oss-20b:free',
+    name: 'GPT OSS 20B (Free)',
+    description: 'Super fast responses for quick intimate conversations',
+    provider: 'OpenAI',
+    maxTokens: 4096,
+    isFree: true,
+    isFast: true,
   },
   {
     id: 'microsoft/phi-3-mini-128k-instruct:free',
