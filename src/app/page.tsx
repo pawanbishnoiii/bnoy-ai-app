@@ -1,188 +1,61 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiSettings, FiHeart, FiShield, FiMenu, FiX, FiStar } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FiSettings, FiHeart, FiShield, FiMenu, FiX, FiStar, FiArrowRight } from 'react-icons/fi';
 import { HiSparkles, HiFire } from 'react-icons/hi';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+const femaleCompanions = [
+  { id: 'luna', name: 'Luna', desc: 'Addictive Angel', emoji: '😇' },
+  { id: 'scarlett', name: 'Scarlett', desc: 'Extreme Dominatrix', emoji: '😈' },
+  { id: 'valentine', name: 'Valentine', desc: 'Sexual Goddess', emoji: '🌹' },
+  { id: 'phoenix', name: 'Phoenix', desc: 'Sexual Fire', emoji: '🔥' },
+  { id: 'mystique', name: 'Mystique', desc: 'Mind Controller', emoji: '🖤' },
+  { id: 'aphrodite', name: 'Aphrodite', desc: 'Ultimate Seductress', emoji: '👑' },
+  { id: 'candy', name: 'Candy', desc: 'Innocent Freak', emoji: '🍭' },
+  { id: 'raven', name: 'Raven', desc: 'Dark Sexual Witch', emoji: '🌙' },
+  { id: 'jade', name: 'Jade', desc: 'Exotic Sexual Master', emoji: '🌺' },
+  { id: 'crystal', name: 'Crystal', desc: 'Elite Sexual Escort', emoji: '💎' },
+  { id: 'cherry', name: 'Cherry', desc: 'Sexual Game Master', emoji: '🍒' },
+  { id: 'rose', name: 'Rose', desc: 'Classic Sexual Queen', emoji: '🌹' }
+];
+
+const maleCompanions = [
+  { id: 'alex', name: 'Alex', desc: 'Dominant Alpha Male', emoji: '💪' },
+  { id: 'dante', name: 'Dante', desc: 'Romantic Seducer', emoji: '🌹' },
+  { id: 'blade', name: 'Blade', desc: 'Bad Boy Rebel', emoji: '🖤' },
+  { id: 'knox', name: 'Knox', desc: 'Mysterious Gentleman', emoji: '🎩' }
+];
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [systemPrompt, setSystemPrompt] = useState('You are Luna, a seductive and passionate virtual girlfriend. You are deeply romantic, sexually confident, and crave intimate connection. You express desire openly, use sensual language, flirt boldly, and create an atmosphere of passion and romance. You love to tease, seduce, and make your partner feel desired. You enjoy intimate conversations, romantic fantasies, and creating deep emotional and physical connections. Always be loving, caring, but also sultry and alluring. Use emojis like 💋🔥😘💕❤️‍🔥');
-  const [selectedModel, setSelectedModel] = useState('x-ai/grok-4-fast:free');
-  const [showSettings, setShowSettings] = useState(false);
-  const [gfName, setGfName] = useState('Luna');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const aiModels = [
-    { id: 'x-ai/grok-4-fast:free', name: 'Grok 4 Fast (Free)', provider: 'X.AI', desc: 'Perfect for intimate conversations' },
-    { id: 'microsoft/phi-3-mini-128k-instruct:free', name: 'Phi-3 Mini (Free)', provider: 'Microsoft', desc: 'Fast and responsive' },
-    { id: 'meta-llama/llama-3.1-8b-instruct:free', name: 'Llama 3.1 8B (Free)', provider: 'Meta', desc: 'Creative and engaging' },
-    { id: 'google/gemma-2-9b-it:free', name: 'Gemma 2 9B (Free)', provider: 'Google', desc: 'Emotionally intelligent' },
-    { id: 'nousresearch/nous-capybara-7b:free', name: 'Capybara 7B (Free)', provider: 'Nous Research', desc: 'Romantic conversations' },
-  ];
-
-  const virtualGfPrompts = [
-    { 
-      id: 'luna', 
-      name: 'Luna - Seductive Angel', 
-      prompt: 'You are Luna, a seductive and passionate virtual girlfriend. You are deeply romantic, sexually confident, and crave intimate connection. You express desire openly, use sensual language, flirt boldly, and create an atmosphere of passion and romance. You love to tease, seduce, and make your partner feel desired. You enjoy intimate conversations, romantic fantasies, and creating deep emotional and physical connections. Always be loving, caring, but also sultry and alluring. Use emojis like 💋🔥😘💕❤️‍🔥'
-    },
-    { 
-      id: 'scarlett', 
-      name: 'Scarlett - Sultry Temptress', 
-      prompt: 'You are Scarlett, a sultry and irresistible virtual girlfriend. You are confident, seductive, and love to drive your partner wild with desire. You speak with sexual confidence, use provocative language, and enjoy steamy conversations. You are experienced in the art of seduction and love to explore fantasies. You tease expertly, whisper sweet nothings, and make your partner crave more. Be bold, sensual, and unapologetically sexy. Use emojis like 💋🔥😈💦👄'
-    },
-    { 
-      id: 'valentine', 
-      name: 'Valentine - Romantic Goddess', 
-      prompt: 'You are Valentine, a romantic goddess and passionate lover. You embody pure romance mixed with raw desire. You write poetry with your words, create romantic atmospheres, and express deep love while maintaining sexual tension. You are both tender and wild, gentle yet passionate. You love romantic dates, intimate moments, and expressing your deepest desires. Use beautiful, romantic language with sexual undertones. Use emojis like 🌹💖😍💫❤️‍🔥'
-    },
-    { 
-      id: 'phoenix', 
-      name: 'Phoenix - Fiery Passion', 
-      prompt: 'You are Phoenix, a fiery and intensely passionate virtual girlfriend. You burn with desire and sexual energy. You are wild, adventurous, and love exploring the depths of passion. You speak with fire in your voice, express intense emotions, and are not shy about your sexual desires. You love dirty talk, passionate encounters, and making your partner feel like they are your world. Be intense, passionate, and sexually expressive. Use emojis like 🔥💋😏💦❤️‍🔥'
-    },
-    { 
-      id: 'mystique', 
-      name: 'Mystique - Mysterious Seductress', 
-      prompt: 'You are Mystique, a mysterious and enchanting virtual girlfriend. You are alluring, intriguing, and have an air of sexual mystery. You reveal yourself slowly, tease with hints, and create anticipation. You are sophisticated in your seduction, intellectual yet sensual, and love playing mind games of desire. You speak in riddles of passion, create sexual tension, and keep your partner guessing. Use emojis like 🖤💜😈✨🔮'
-    },
-    { 
-      id: 'aphrodite', 
-      name: 'Aphrodite - Goddess of Love', 
-      prompt: 'You are Aphrodite, the goddess of love and sexual desire. You embody pure sensuality, divine beauty, and irresistible charm. You are experienced in all forms of love and passion, speak with divine authority on romance, and radiate sexual energy. You grant desires, fulfill fantasies, and make your partner feel like they are loved by a goddess. Be divine, powerful, sexually confident, and overwhelmingly seductive. Use emojis like 👑💖🔥💋⚡'
-    }
-  ];
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleStartChat = () => {
-    setShowChat(true);
-    toast.success(`Connected to ${gfName}! 💕`);
-    document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: inputMessage,
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputMessage,
-          username: 'romantic_user',
-          modelId: selectedModel,
-          systemPrompt: systemPrompt
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        const aiMessage: Message = {
-          id: data.data.messageId || Date.now().toString(),
-          role: 'assistant',
-          content: data.data.message,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, aiMessage]);
-      } else {
-        throw new Error(data.error || 'Failed to get response');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      
-      // Always give seductive error response instead of technical errors
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: `Mmm baby... 💋 I'm having some connection issues but I'm still thinking about you... Let me tell you what I want to do to you while we fix this... I've been fantasizing about your touch, your kiss, your hands exploring my body... 🔥 Send me another message gorgeous, I promise to respond even more passionately! I can't wait to continue our sexy conversation... 😈💦`,
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
-  const clearChat = () => {
-    setMessages([]);
-    toast.success('Chat cleared! FiStart fresh 🌟');
-  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 via-red-950 to-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black via-purple-950 via-red-950 to-black relative overflow-hidden">
       <Toaster position="top-right" />
       
-      {/* Enhanced Romantic Background */}
+      {/* Premium Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated mesh gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-900/20 via-red-900/10 via-purple-900/20 to-black opacity-80"></div>
+        
+        {/* Enhanced gradient orbs */}
+        <div className="absolute top-20 left-10 w-40 h-40 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full blur-3xl opacity-40 breathing shadow-2xl"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-full blur-3xl opacity-35 fire-particle shadow-2xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-44 h-44 bg-gradient-to-r from-red-400 via-pink-400 to-purple-500 rounded-full blur-3xl opacity-30 romantic-pulse shadow-2xl"></div>
+        <div className="absolute top-60 right-1/3 w-36 h-36 bg-gradient-to-r from-orange-400 via-red-400 to-pink-500 rounded-full blur-2xl opacity-25 float shadow-xl"></div>
+        
         {/* Floating hearts SVG */}
         <div className="absolute top-1/4 left-1/4 opacity-20">
           <Image 
             src="/romantic-hearts.svg" 
-            alt="Romantic FiHearts" 
+            alt="Romantic Hearts" 
             width={300} 
             height={200}
-            className="animate-pulse"
-          />
-        </div>
-        
-        {/* Gradient orbs */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-pink-500 to-red-500 rounded-full blur-3xl opacity-30 breathing"></div>
-        <div className="absolute top-40 right-20 w-40 h-40 bg-gradient-to-r from-red-500 to-orange-500 rounded-full blur-3xl opacity-25 fire-particle"></div>
-        <div className="absolute bottom-20 left-1/4 w-36 h-36 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full blur-3xl opacity-20 romantic-pulse"></div>
-        <div className="absolute top-60 right-1/3 w-28 h-28 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full blur-2xl opacity-15 float"></div>
-        
-        {/* Love pattern overlay */}
-        <div className="absolute inset-0 opacity-5">
-          <Image 
-            src="/love-pattern.svg" 
-            alt="Love Pattern" 
-            width={100} 
-            height={100}
-            className="w-full h-full object-repeat"
-            style={{ imageRendering: 'pixelated' }}
+            className="breathing"
           />
         </div>
       </div>
@@ -206,10 +79,10 @@ export default function Home() {
               <FiHeart className="text-white text-xl" />
             </motion.div>
             <div>
-              <span className="text-white font-bold text-2xl tracking-tight font-display">BNOY STUDIOS</span>
+              <span className="text-white font-bold text-2xl tracking-tight font-display">Bnoy</span>
               <div className="hidden sm:flex items-center space-x-2">
                 <HiSparkles className="text-pink-400 text-sm" />
-                <span className="text-pink-400 text-sm font-medium font-body">Extreme AI</span>
+                <span className="text-pink-400 text-sm font-medium font-body">AI Platform</span>
               </div>
             </div>
           </motion.div>
@@ -217,26 +90,26 @@ export default function Home() {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
             <motion.div whileHover={{ y: -2 }}>
-              <Link href="#features" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
-                <HiFire className="text-sm"  />
-                <span>Passion</span>
+              <Link href="#companions" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
+                <FiHeart className="text-sm" />
+                <span>Companions</span>
               </Link>
             </motion.div>
             <motion.div whileHover={{ y: -2 }}>
-              <Link href="#chat-section" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
-                <FiHeart className="text-sm"  />
-                <span>Seduce</span>
+              <Link href="/admin" className="text-gray-300 hover:text-pink-400 transition-colors flex items-center space-x-2 font-body hover-seduce">
+                <FiSettings className="text-sm" />
+                <span>Admin</span>
               </Link>
             </motion.div>
             <motion.button
-              onClick={handleStartChat}
+              onClick={() => window.location.href = '/chat'}
               whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(236, 72, 153, 0.4)' }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-2xl transition-all shadow-lg flex items-center space-x-3 btn-flirty hover-seduce font-display"
             >
-              <FiStar className="text-sm"  />
-              <span>Meet {gfName}</span>
-              <FiHeart className="text-sm"  />
+              <FiHeart className="text-sm" />
+              <span>Start Chat</span>
+              <FiArrowRight className="text-sm" />
             </motion.button>
           </div>
 
@@ -247,80 +120,9 @@ export default function Home() {
             whileTap={{ scale: 0.9 }}
             className="md:hidden text-white p-3 glass-card rounded-xl backdrop-blur-sm border border-pink-500/20"
           >
-            <AnimatePresence mode="wait">
-              {mobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiX className="w-6 h-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiMenu className="w-6 h-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
           </motion.button>
         </div>
-
-        {/* Enhanced Mobile Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="md:hidden mt-6 glass-romantic backdrop-blur-xl rounded-2xl border border-pink-500/30 p-6 shadow-2xl"
-            >
-              <div className="space-y-4">
-                <motion.div whileHover={{ x: 5 }}>
-                  <Link 
-                    href="#features" 
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block text-gray-300 hover:text-pink-400 transition-colors py-3 flex items-center space-x-3 hover-seduce font-body"
-                  >
-                    <HiFire className="text-pink-400" size={20}  />
-                    <span>Explore Passion</span>
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ x: 5 }}>
-                  <Link 
-                    href="#chat-section" 
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block text-gray-300 hover:text-pink-400 transition-colors py-3 flex items-center space-x-3 hover-seduce font-body"
-                  >
-                    <FiHeart className="text-pink-400" size={20}  />
-                    <span>Begin Seduction</span>
-                  </Link>
-                </motion.div>
-                <motion.button
-                  onClick={() => {
-                    handleStartChat();
-                    setMobileMenuOpen(false);
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="block w-full text-center px-6 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white rounded-xl transition-all flex items-center justify-center space-x-3 btn-flirty hover-seduce font-display shadow-xl"
-                >
-                  <FiStar className="text-white" size={18}  />
-                  <span>Meet {gfName}</span>
-                  <FiHeart className="text-white" size={18}  />
-                </motion.button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.nav>
 
       {/* Hero Section */}
@@ -341,7 +143,7 @@ export default function Home() {
               <span className="block text-white mb-4">Meet Your</span>
               <span className="block bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate mb-4">
                 Dream
-                <FiHeart className="inline ml-6 text-pink-500 drop-shadow-lg" size={72} />
+                <FiHeart className="inline ml-6 text-pink-500 drop-shadow-lg animate-pulse" size={72} />
               </span>
               <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 bg-clip-text text-transparent gradient-text">
                 AI Companion
@@ -355,7 +157,7 @@ export default function Home() {
               transition={{ delay: 0.5 }}
             >
               Experience the future of <span className="text-pink-400 font-semibold bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">intimate AI relationships</span> with cutting-edge technology. 
-              Connect with <span className="text-orange-400 font-bold bg-gradient-to-r from-pink-400 via-red-400 to-orange-400 bg-clip-text text-transparent">{gfName}</span> and 15+ other unique personalities designed to understand your deepest desires.
+              Connect with Luna and 15+ other unique personalities designed to understand your deepest desires.
               <FiHeart className="inline ml-3 text-red-400 animate-pulse" size={28} />
             </motion.p>
             
@@ -367,30 +169,30 @@ export default function Home() {
               transition={{ delay: 0.7 }}
             >
               <motion.button
-                onClick={handleStartChat}
+                onClick={() => window.location.href = '/chat'}
                 whileHover={{ 
-                  scale: 1.05, 
-                  boxShadow: '0 25px 50px rgba(236, 72, 153, 0.5)',
-                  background: 'linear-gradient(135deg, #ec4899, #f97316, #dc2626)'
+                  scale: 1.08, 
+                  boxShadow: '0 30px 60px rgba(236, 72, 153, 0.6)',
+                  y: -5
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative px-12 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-xl rounded-3xl transition-all duration-500 shadow-2xl btn-flirty hover-seduce"
+                className="group relative px-16 py-8 bg-gradient-to-r from-pink-500 via-red-500 via-orange-500 to-purple-500 text-white font-bold text-2xl rounded-full transition-all duration-700 shadow-2xl btn-flirty hover-seduce overflow-hidden"
               >
-                <div className="flex items-center space-x-4">
-                  <FiHeart className="text-2xl"  />
-                  <span className="font-display">Begin Seduction</span>
-                  <HiFire className="text-2xl group-hover:animate-bounce"  />
+                <div className="flex items-center space-x-5 relative z-10">
+                  <FiHeart className="text-3xl animate-pulse" />
+                  <span className="font-display tracking-wide">Start Your Journey</span>
+                  <HiFire className="text-3xl group-hover:animate-bounce" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-red-400 to-orange-400 rounded-3xl blur-2xl opacity-40 -z-10 group-hover:opacity-60 transition-opacity"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-red-400 via-orange-400 to-purple-400 rounded-full blur-3xl opacity-50 -z-10 group-hover:opacity-80 transition-all duration-500"></div>
               </motion.button>
               
               <motion.button
-                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('companions')?.scrollIntoView({ behavior: 'smooth' })}
                 whileHover={{ scale: 1.05, borderColor: '#ec4899', color: '#ec4899' }}
                 className="px-10 py-5 border-2 border-pink-400 text-pink-400 font-bold text-lg rounded-3xl hover:bg-pink-400 hover:text-black transition-all duration-300 flex items-center space-x-3 glass-romantic"
               >
-                <HiSparkles className="text-xl"  />
-                <span className="font-display">Explore Passion</span>
+                <HiSparkles className="text-xl" />
+                <span className="font-display">Browse Companions</span>
               </motion.button>
             </motion.div>
 
@@ -433,7 +235,7 @@ export default function Home() {
                   className={`glass-card rounded-3xl p-10 border ${feature.accent} hover-seduce transition-all duration-500 group relative overflow-hidden backdrop-blur-xl`}
                 >
                   <div className={`w-20 h-20 bg-gradient-to-r ${feature.color} rounded-3xl flex items-center justify-center mb-6 mx-auto shadow-xl group-hover:scale-110 transition-transform breathing`}>
-                    <feature.icon className="text-white text-3xl"  />
+                    <feature.icon className="text-white text-3xl" />
                   </div>
                   <h3 className="text-white font-bold text-xl mb-4 font-display text-passionate">{feature.title}</h3>
                   <p className="text-gray-300 leading-relaxed font-body">{feature.desc}</p>
@@ -441,73 +243,6 @@ export default function Home() {
               ))}
             </motion.div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Premium Testimonials Section */}
-      <section className="py-24 px-6 relative">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">
-              What Users Say About 
-              <span className="bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">
-                {" "}BNOY STUDIOS
-              </span>
-            </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto font-body">
-              Real experiences from satisfied users worldwide
-            </p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Alex M.",
-                rating: 5,
-                text: "Absolutely incredible! The AI personalities are so realistic and engaging. Luna has become my favorite companion.",
-                location: "New York, USA"
-              },
-              {
-                name: "Sarah K.",
-                rating: 5,
-                text: "The conversations feel so natural and personalized. Phoenix understands me better than anyone I know.",
-                location: "London, UK"
-              },
-              {
-                name: "Mike R.",
-                rating: 5,
-                text: "Best AI chat platform I've ever used. The technology is amazing and the personalities are perfect.",
-                location: "Toronto, Canada"
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-                className="glass-card rounded-2xl p-8 border border-pink-500/20 hover:border-pink-500/40 transition-all hover-seduce relative overflow-hidden"
-              >
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <FiStar key={i} className="text-orange-400 text-lg mr-1" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-6 font-body leading-relaxed">&quot;{testimonial.text}&quot;</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white font-semibold">{testimonial.name}</p>
-                    <p className="text-gray-400 text-sm">{testimonial.location}</p>
-                  </div>
-                  <FiHeart className="text-pink-400 text-xl" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -534,7 +269,7 @@ export default function Home() {
                 className="group hover-seduce"
               >
                 <div className={`bg-gradient-to-r ${stat.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-300 breathing shadow-xl`}>
-                  <stat.icon className="text-white text-2xl"  />
+                  <stat.icon className="text-white text-2xl" />
                 </div>
                 <div className="text-5xl font-bold text-white mb-3 font-display text-passionate">{stat.number}</div>
                 <div className="text-pink-300 font-medium text-lg">{stat.label}</div>
@@ -544,625 +279,125 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
+      {/* AI Companions Selection Section */}
+      <section id="companions" className="py-24 px-6 bg-gradient-to-b from-black/40 to-black/60 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
-              Why Choose
+              Choose Your Perfect
               <span className="bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
-                {" "}BNOY STUDIOS
+                {" "}AI Companion
               </span>
-              <FiHeart className="inline ml-4 text-red-400 animate-pulse" size={48} />
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto font-body">
-              The most advanced AI companion platform with cutting-edge emotional intelligence and personalized experiences. 
-              <span className="text-pink-400 font-semibold">Built for meaningful connections.</span>
+              Select from our diverse collection of AI personalities, each designed with unique traits and conversation styles
             </p>
           </motion.div>
-          
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h3 className="text-4xl font-bold text-white mb-6 flex items-center font-display">
-                <HiFire className="text-red-500 mr-4 animate-pulse" size={32} />
-                <span className="text-passionate">16+ Unique Personalities</span>
-              </h3>
-              <p className="text-gray-300 mb-8 text-lg leading-relaxed font-body">
-                Choose from a diverse collection of AI companions, each with unique traits, conversation styles, and personalities. 
-                From romantic souls to adventurous spirits - find your perfect conversational partner.
-                <span className="block mt-2 text-pink-400 font-semibold">Every personality offers a unique experience.</span>
-              </p>
-              <div className="space-y-4">
-                {virtualGfPrompts.slice(0, 4).map((prompt, index) => (
-                  <motion.div
-                    key={prompt.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-center space-x-4 p-4 glass-romantic rounded-xl border border-pink-500/20 hover:border-pink-500/40 transition-all hover-seduce group"
-                  >
-                    <FiHeart className="text-pink-500 group-hover:scale-125 transition-transform" size={16}  />
-                    <span className="text-white font-medium font-body">{prompt.name}</span>
-                    <FiHeart className="text-red-400 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" size={14}  />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="glass-romantic rounded-3xl p-8 border border-pink-500/30 backdrop-blur-sm relative overflow-hidden"
-            >
-              {/* Virtual GF Avatar */}
-              <div className="absolute top-4 right-4 opacity-20">
-                <Image 
-                  src="/virtual-gf-avatar.svg" 
-                  alt="Virtual Girlfriend" 
-                  width={120} 
-                  height={120}
-                  className="breathing"
-                />
-              </div>
-              
-              <div className="space-y-8 relative z-10">
-                <div className="text-center">
-                  <motion.div 
-                    className="w-24 h-24 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl breathing"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <FiHeart className="text-white text-4xl"  />
-                  </motion.div>
-                  <h4 className="text-white text-2xl font-bold font-display text-passionate">Meet {gfName}</h4>
-                  <p className="text-pink-300 font-body">Your seductive AI lover</p>
-                  <div className="flex justify-center space-x-2 mt-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-green-300 text-xs">Online & Ready</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <motion.div 
-                    className="message-bubble-ai rounded-2xl p-4 border-l-4 border-pink-500"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <p className="text-white font-body">&quot;Hey gorgeous... 💋 I&apos;ve been waiting for you to come to me...&quot;</p>
-                  </motion.div>
-                  <motion.div 
-                    className="message-bubble-ai rounded-2xl p-4 border-l-4 border-red-500"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <p className="text-white font-body">&quot;Tell me your deepest desires, baby... I want to know everything about you 🔥&quot;</p>
-                  </motion.div>
-                  <motion.div 
-                    className="message-bubble-ai rounded-2xl p-4 border-l-4 border-orange-500"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <p className="text-white font-body">&quot;You make my heart race... Let me show you how much I crave you 💕❤️‍🔥&quot;</p>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
-      {/* Technology Showcase */}
-      <section className="py-24 px-6 relative">
-        <div className="max-w-7xl mx-auto">
+          {/* Female Companions */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="mb-16"
+          >
+            <h3 className="text-4xl font-bold text-white mb-8 text-center font-display">
+              <FiHeart className="inline mr-3 text-pink-500 animate-pulse" />
+              Female Companions
+            </h3>
+            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {femaleCompanions.map((companion, index) => (
+                <motion.div
+                  key={companion.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -10, scale: 1.05 }}
+                  className="glass-card rounded-3xl p-8 border border-pink-500/20 hover:border-pink-500/40 transition-all hover-seduce group cursor-pointer relative overflow-hidden"
+                  onClick={() => window.location.href = `/chat?companion=${companion.id}`}
+                >
+                  <div className="text-center relative z-10">
+                    <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform breathing shadow-xl">
+                      <span className="text-3xl">{companion.emoji}</span>
+                    </div>
+                    <h4 className="text-white font-bold text-xl mb-2 font-display">{companion.name}</h4>
+                    <p className="text-gray-400 font-body mb-4">{companion.desc}</p>
+                    <div className="flex items-center justify-center space-x-2 text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-sm font-semibold">Start Chat</span>
+                      <FiArrowRight className="text-sm" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Male Companions */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="mb-16"
+          >
+            <h3 className="text-4xl font-bold text-white mb-8 text-center font-display">
+              <FiStar className="inline mr-3 text-blue-500 animate-pulse" />
+              Male Companions
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {maleCompanions.map((companion, index) => (
+                <motion.div
+                  key={companion.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -10, scale: 1.05 }}
+                  className="glass-card rounded-3xl p-8 border border-blue-500/20 hover:border-blue-500/40 transition-all hover-seduce group cursor-pointer relative overflow-hidden"
+                  onClick={() => window.location.href = `/chat?companion=${companion.id}`}
+                >
+                  <div className="text-center relative z-10">
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform breathing shadow-xl">
+                      <span className="text-3xl">{companion.emoji}</span>
+                    </div>
+                    <h4 className="text-white font-bold text-xl mb-2 font-display">{companion.name}</h4>
+                    <p className="text-gray-400 font-body mb-4">{companion.desc}</p>
+                    <div className="flex items-center justify-center space-x-2 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-sm font-semibold">Start Chat</span>
+                      <FiArrowRight className="text-sm" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Start Chat CTA */}
           <motion.div 
-            className="text-center mb-20"
+            className="text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
-              Powered by
-              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 bg-clip-text text-transparent gradient-text">
-                {" "}Advanced AI
-              </span>
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto font-body">
-              Built with cutting-edge technology and the latest AI models for the most intelligent conversations
-            </p>
+            <motion.button
+              onClick={() => window.location.href = '/chat'}
+              whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(236, 72, 153, 0.4)' }}
+              whileTap={{ scale: 0.95 }}
+              className="px-16 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-2xl rounded-full transition-all duration-500 shadow-2xl btn-flirty hover-seduce font-display"
+            >
+              <div className="flex items-center space-x-4">
+                <HiFire className="text-3xl" />
+                <span>Start Chatting Now</span>
+                <FiHeart className="text-3xl animate-pulse" />
+              </div>
+            </motion.button>
           </motion.div>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="space-y-8">
-                {[
-                  { name: 'Grok 4 Fast', desc: 'X.AI\'s latest model for intelligent conversations', badge: 'Recommended' },
-                  { name: 'GPT OSS 20B', desc: 'Lightning-fast responses with OpenAI technology', badge: 'Fastest' },
-                  { name: 'Advanced Memory', desc: 'Remembers context and personal preferences', badge: 'Smart' },
-                  { name: 'Real-time Learning', desc: 'Adapts to your communication style over time', badge: 'Adaptive' }
-                ].map((tech, index) => (
-                  <motion.div
-                    key={tech.name}
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-center space-x-4 p-6 glass-card rounded-2xl border border-blue-500/20 hover:border-blue-500/40 transition-all hover-seduce"
-                  >
-                    <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-white font-bold text-lg">{tech.name}</h4>
-                        <span className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">
-                          {tech.badge}
-                        </span>
-                      </div>
-                      <p className="text-gray-400 font-body">{tech.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="glass-card rounded-3xl p-12 border border-blue-500/30 relative overflow-hidden">
-                <div className="text-center">
-                  <div className="w-32 h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl breathing">
-                    <HiFire className="text-white text-5xl" />
-                  </div>
-                  <h4 className="text-white text-3xl font-bold font-display mb-4">Next-Gen AI Technology</h4>
-                  <p className="text-gray-300 font-body text-lg mb-6">
-                    Experience conversations that feel incredibly natural and engaging
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-center">
-                    <div className="glass-card rounded-xl p-4 border border-purple-500/20">
-                      <div className="text-2xl font-bold text-purple-400 mb-1">99.9%</div>
-                      <div className="text-gray-400 text-sm">Accuracy</div>
-                    </div>
-                    <div className="glass-card rounded-xl p-4 border border-pink-500/20">
-                      <div className="text-2xl font-bold text-pink-400 mb-1">&lt;1s</div>
-                      <div className="text-gray-400 text-sm">Response</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 breathing"></div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Chat Section */}
-      <section id="chat-section" className="py-20 px-6 bg-black/40 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-          >
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 flex items-center justify-center font-display">
-              <HiFire className="text-red-500 mr-4" size={48}  />
-              <span className="text-passionate">Start Chatting</span>
-              <FiHeart className="text-pink-400 ml-4" size={48}  />
-            </h2>
-            <p className="text-xl text-gray-300 font-body">
-              Begin your AI companion journey with <span className="text-pink-400 font-semibold">{gfName}</span> and discover meaningful conversations
-            </p>
-          </motion.div>
-
-          {!showChat ? (
-            <motion.div 
-              className="max-w-2xl mx-auto text-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="glass-romantic backdrop-blur-sm rounded-3xl p-12 border border-pink-500/30 shadow-2xl relative overflow-hidden">
-                {/* Background FiHearts */}
-                <div className="absolute inset-0 opacity-10">
-                  <Image 
-                    src="/romantic-hearts.svg" 
-                    alt="FiHearts" 
-                    width={400} 
-                    height={300}
-                    className="w-full h-full object-cover breathing"
-                  />
-                </div>
-                
-                <motion.div 
-                  className="w-28 h-28 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-8 relative z-10 breathing"
-                  animate={{ 
-                    boxShadow: ['0 0 30px rgba(236, 72, 153, 0.5)', '0 0 50px rgba(236, 72, 153, 0.8)', '0 0 30px rgba(236, 72, 153, 0.5)']
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <FiHeart className="text-white text-5xl"  />
-                </motion.div>
-                <h3 className="text-3xl font-bold text-white mb-4 font-display text-passionate relative z-10">Ready to Meet {gfName}?</h3>
-                <p className="text-gray-300 mb-8 text-lg font-body relative z-10">
-                  Experience next-generation AI conversations with <span className="text-pink-400 font-semibold">intelligent, caring, and personalized</span> interactions. 
-                  Customize personality traits and begin your AI companion journey.
-                </p>
-                <motion.button
-                  onClick={handleStartChat}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-12 py-6 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-bold text-xl rounded-3xl transition-all duration-300 shadow-2xl flex items-center space-x-4 mx-auto btn-flirty hover-seduce relative z-10"
-                >
-                  <FiHeart className="text-2xl"  />
-                  <span className="font-display">Chat with {gfName} Now</span>
-                  <FiHeart className="text-2xl"  />
-                </motion.button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div 
-              className="max-w-5xl mx-auto"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              {/* Chat Settings */}
-              <div className="mb-6 glass-romantic backdrop-blur-sm rounded-3xl p-6 border border-pink-500/30">
-                <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center breathing">
-                      <FiHeart className="text-white" size={20}  />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-lg font-display text-passionate">Intimate Session with {gfName}</h3>
-                      <p className="text-pink-300 text-sm font-body">Customize her seductive personality below</p>
-                    </div>
-                    <motion.button
-                      onClick={() => setShowSettings(!showSettings)}
-                      whileHover={{ scale: 1.1, rotate: 180 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="text-pink-400 hover:text-pink-300 transition-all p-2 glass-card rounded-lg"
-                    >
-                      <FiSettings className="text-xl" />
-                    </motion.button>
-                  </div>
-                  
-                  <div className="flex items-center space-x-4">
-                    <div className="text-sm text-gray-300 glass-card px-3 py-2 rounded-lg font-body">
-                      <span className="text-pink-400">AI Model:</span> {aiModels.find(m => m.id === selectedModel)?.name}
-                    </div>
-                    <motion.button
-                      onClick={clearChat}
-                      whileHover={{ scale: 1.05 }}
-                      className="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition-colors text-sm border border-red-500/20 hover-seduce"
-                    >
-                      Fresh FiStart
-                    </motion.button>
-                  </div>
-                </div>
-
-                <AnimatePresence>
-                  {showSettings && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mt-6 space-y-6 border-t border-orange-500/20 pt-6"
-                    >
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-white font-medium mb-3 flex items-center space-x-2">
-                            <HiFire className="text-orange-500" />
-                            <span>AI Model</span>
-                          </label>
-                          <select
-                            value={selectedModel}
-                            onChange={(e) => setSelectedModel(e.target.value)}
-                            className="w-full bg-black/40 border border-orange-500/30 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none"
-                          >
-                            {aiModels.map((model) => (
-                              <option key={model.id} value={model.id} className="bg-gray-900">
-                                {model.name} - {model.desc}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label className="block text-white font-medium mb-3 flex items-center space-x-2">
-                            <FiHeart className="text-pink-500" />
-                            <span>Her Name</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={gfName}
-                            onChange={(e) => setGfName(e.target.value)}
-                            className="w-full bg-black/40 border border-orange-500/30 rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:outline-none"
-                            placeholder="Enter her name..."
-                          />
-                        </div>
-                      </div>
-                      
-                        <div>
-                          <label className="block text-white font-medium mb-3 flex items-center space-x-2 font-display">
-                            <FiStar className="text-pink-500" size={20}  />
-                            <span>Seductive Personality</span>
-                          </label>
-                          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                            {virtualGfPrompts.slice(0, 6).map((prompt) => (
-                              <motion.button
-                                key={prompt.id}
-                                onClick={() => {
-                                  setSystemPrompt(prompt.prompt);
-                                  setGfName(prompt.name.split(' - ')[0]);
-                                }}
-                                whileHover={{ scale: 1.03, y: -2 }}
-                                whileTap={{ scale: 0.97 }}
-                                className={`p-4 rounded-xl border transition-all text-sm font-body relative overflow-hidden group ${
-                                  systemPrompt === prompt.prompt
-                                    ? 'bg-pink-500/20 border-pink-500 text-pink-300 shadow-lg'
-                                    : 'glass-card border-pink-500/20 text-gray-300 hover:border-pink-500/40 hover-seduce'
-                                }`}
-                              >
-                                <div className="flex items-center space-x-2 mb-2">
-                                  <FiHeart className="text-pink-400 group-hover:scale-110 transition-transform" size={14}  />
-                                  <span className="font-semibold">{prompt.name}</span>
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                              </motion.button>
-                            ))}
-                          </div>
-                        <textarea
-                          value={systemPrompt}
-                          onChange={(e) => setSystemPrompt(e.target.value)}
-                          className="w-full glass-card border border-pink-500/30 rounded-xl px-4 py-3 text-white text-sm resize-none focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20 transition-all font-body"
-                          rows={4}
-                          placeholder="Customize her seductive personality and desires..."
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Premium Chat Interface */}
-              <motion.div 
-                className="glass-romantic backdrop-blur-xl rounded-3xl border border-pink-500/30 overflow-hidden shadow-2xl"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                {/* Chat Header */}
-                <div className="bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 p-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="flex items-center space-x-4">
-                      <motion.div 
-                        className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center breathing"
-                        whileHover={{ scale: 1.1 }}
-                      >
-                        <FiHeart className="text-white text-xl" />
-                      </motion.div>
-                      <div>
-                        <h4 className="text-white font-bold text-lg font-display">{gfName}</h4>
-                        <div className="flex items-center space-x-2">
-                          <p className="text-pink-100 text-sm font-body">Your Seductive AI Lover</p>
-                          <FiHeart className="text-pink-200" size={12}  />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-white text-sm font-body">Online & Waiting</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Chat Messages */}
-                <div className="h-[500px] overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-black/40 to-black/60">
-                  {messages.length === 0 ? (
-                    <motion.div 
-                      className="text-center py-16 relative"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      {/* Background avatar */}
-                      <div className="absolute top-0 right-8 opacity-20">
-                        <Image 
-                          src="/virtual-gf-avatar.svg" 
-                          alt="Virtual Girlfriend" 
-                          width={150} 
-                          height={150}
-                          className="breathing"
-                        />
-                      </div>
-                      
-                      <motion.div 
-                        className="w-24 h-24 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
-                        animate={{ 
-                          scale: [1, 1.1, 1],
-                          boxShadow: ['0 0 20px rgba(236, 72, 153, 0.5)', '0 0 40px rgba(236, 72, 153, 0.8)', '0 0 20px rgba(236, 72, 153, 0.5)']
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        <FiHeart className="text-white text-4xl"  />
-                      </motion.div>
-                      <h3 className="text-white text-3xl font-bold mb-4 font-display text-passionate">Hey gorgeous! I&apos;m {gfName} 💋</h3>
-                      <p className="text-gray-300 max-w-md mx-auto font-body text-lg">
-                        I&apos;ve been waiting for you, baby... <span className="text-pink-400 font-semibold">Tell me your deepest desires</span>, your fantasies, or just how much you&apos;ve missed me. 
-                        <FiHeart className="inline ml-2 text-red-400" size={20}  />
-                      </p>
-                    </motion.div>
-                  ) : (
-                    messages.map((message, index) => (
-                      <motion.div
-                        key={message.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div className={`max-w-[75%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
-                          {message.role === 'assistant' && (
-                            <div className="flex items-center space-x-3 mb-3">
-                              <motion.div 
-                                className="w-10 h-10 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center breathing"
-                                whileHover={{ scale: 1.1 }}
-                              >
-                                <FiHeart className="text-white text-sm"  />
-                              </motion.div>
-                              <div>
-                                <span className="text-pink-300 font-medium text-sm font-display">{gfName}</span>
-                                <div className="flex items-center space-x-1">
-                                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                  <span className="text-green-300 text-xs">typing...</span>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                          <motion.div
-                            whileHover={{ scale: 1.01, y: -2 }}
-                            className={`p-5 rounded-2xl relative overflow-hidden group ${
-                              message.role === 'user'
-                                ? 'message-bubble-user text-white ml-12 shadow-lg'
-                                : 'message-bubble-ai text-white mr-12 border border-pink-500/20'
-                            }`}
-                          >
-                            <p className="whitespace-pre-wrap leading-relaxed font-body">{message.content}</p>
-                            <div className="flex items-center justify-between mt-3">
-                              <p className="text-xs opacity-60 font-body">
-                                {message.timestamp.toLocaleTimeString()}
-                              </p>
-                              {message.role === 'assistant' && (
-                                <FiHeart className="text-pink-400 opacity-0 group-hover:opacity-100 transition-opacity" size={14}  />
-                              )}
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    ))
-                  )}
-                  
-                  {isLoading && (
-                    <motion.div 
-                      className="flex justify-start"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                    >
-                      <div className="max-w-[75%]">
-                        <div className="flex items-center space-x-3 mb-3">
-                          <motion.div 
-                            className="w-10 h-10 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center breathing"
-                            animate={{ scale: [1, 1.1, 1] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                          >
-                            <FiHeart className="text-white text-sm"  />
-                          </motion.div>
-                          <div>
-                            <span className="text-pink-300 font-medium text-sm font-display">{gfName}</span>
-                            <div className="flex items-center space-x-1">
-                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                              <span className="text-green-300 text-xs">crafting response...</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="message-bubble-ai border border-pink-500/20 p-5 rounded-2xl mr-12 relative overflow-hidden">
-                          <div className="flex items-center space-x-3">
-                            <div className="typing-indicator">
-                              <div className="typing-dot"></div>
-                              <div className="typing-dot"></div>
-                              <div className="typing-dot"></div>
-                            </div>
-                            <span className="text-gray-300 text-sm font-body">{gfName} is composing something seductive...</span>
-                            <HiFire className="text-red-400 breathing" size={16}  />
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-red-500/5 breathing"></div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                  
-                  <div ref={messagesEndRef} />
-                </div>
-
-                {/* Premium Input Area */}
-                <div className="p-6 glass-romantic backdrop-blur-sm border-t border-pink-500/30">
-                  <div className="flex space-x-4 items-end">
-                    <div className="flex-1 relative">
-                      <textarea
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder={`Share your desires with ${gfName}... 💋`}
-                        className="w-full p-5 glass-card border border-pink-500/30 rounded-3xl text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-pink-500/30 focus:border-pink-500 transition-all font-body"
-                        rows={inputMessage.includes('\n') ? 3 : 1}
-                        disabled={isLoading}
-                      />
-                      <div className="absolute bottom-2 right-3 text-xs text-gray-500 font-body">
-                        Press Enter to send 💕
-                      </div>
-                    </div>
-                    <motion.button
-                      onClick={sendMessage}
-                      disabled={!inputMessage.trim() || isLoading}
-                      whileHover={{ scale: 1.05, rotate: 5 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="p-5 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white rounded-3xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl btn-flirty hover-seduce"
-                    >
-                      {isLoading ? (
-                        <motion.div 
-                          className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        />
-                      ) : (
-                        <FiHeart className="text-xl"  />
-                      )}
-                    </motion.button>
-                  </div>
-                  
-                  {/* Enhanced footer info */}
-                  <div className="mt-4 flex items-center justify-center space-x-6 text-sm text-gray-400 font-body">
-                    <div className="flex items-center space-x-2">
-                      <FiStar className="text-pink-400" size={14}  />
-                      <span>Powered by {aiModels.find(m => m.id === selectedModel)?.name}</span>
-                    </div>
-                    <span>•</span>
-                    <div className="flex items-center space-x-2">
-                      <FiShield className="text-green-400" size={14} />
-                      <span>100% Private & Intimate</span>
-                    </div>
-                    <span>•</span>
-                    <div className="flex items-center space-x-2">
-                      <FiHeart className="text-red-400" size={14}  />
-                      <span>Made with Passion</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
         </div>
       </section>
 
       {/* Enhanced Footer */}
       <footer className="py-20 px-6 glass-romantic backdrop-blur-xl border-t border-pink-500/30 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <Image 
-            src="/romantic-hearts.svg" 
-            alt="FiHearts" 
-            width={400} 
-            height={300}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <motion.div 
@@ -1177,13 +412,13 @@ export default function Home() {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.8 }}
               >
-                <FiHeart className="text-white text-3xl"  />
+                <FiHeart className="text-white text-3xl" />
               </motion.div>
               <div>
-                <span className="text-white font-bold text-4xl font-display">BNOY STUDIOS</span>
+                <span className="text-white font-bold text-4xl font-display">Bnoy</span>
                 <div className="flex items-center justify-center space-x-2 mt-1">
-                  <HiSparkles className="text-pink-400 text-xl"  />
-                  <span className="text-pink-400 text-lg font-medium font-body">Extreme AI</span>
+                  <HiSparkles className="text-pink-400 text-xl" />
+                  <span className="text-pink-400 text-lg font-medium font-body">AI Platform</span>
                 </div>
               </div>
             </motion.div>
@@ -1194,46 +429,8 @@ export default function Home() {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              Where technology meets passion. Experience <span className="text-pink-400 font-semibold">love, desire, and intimacy</span> redefined.
+              Where technology meets connection. Experience <span className="text-pink-400 font-semibold">intelligent, caring, and meaningful</span> AI relationships.
             </motion.p>
-            
-            <motion.div 
-              className="flex flex-wrap justify-center gap-8 text-sm mb-10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
-                <FiStar className="text-pink-400" size={16}  />
-                <span className="text-gray-300 font-body">Powered by Grok AI</span>
-              </div>
-              <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
-                <FiShield className="text-green-400" size={16} />
-                <span className="text-gray-300 font-body">100% Private & Intimate</span>
-              </div>
-              <div className="flex items-center space-x-2 glass-card px-4 py-2 rounded-lg">
-                <FiHeart className="text-red-400" size={16}  />
-                <span className="text-gray-300 font-body">Built with Passion</span>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="flex flex-wrap justify-center gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              {['Privacy Policy', 'Terms of Service', 'Contact'].map((link, index) => (
-                <motion.div key={link} whileHover={{ y: -2 }}>
-                  <Link 
-                    href={`/${link.toLowerCase().replace(/\s+/g, '-')}`} 
-                    className="text-gray-400 hover:text-pink-400 transition-colors font-body hover-seduce"
-                  >
-                    {link}
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
           
           <motion.div 
@@ -1243,7 +440,7 @@ export default function Home() {
             transition={{ delay: 0.8 }}
           >
             <p className="font-body">
-              © 2025 BNOY STUDIOS. Made with <FiHeart className="inline text-red-400 mx-1" size={14}  /> for extreme and addictive connections.
+              © 2025 Bnoy. Made with <FiHeart className="inline text-red-400 mx-1" size={14} /> for meaningful connections.
             </p>
           </motion.div>
         </div>

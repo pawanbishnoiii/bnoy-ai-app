@@ -129,7 +129,7 @@ export default function ChatPage() {
       const welcomeMessage: Message = {
         id: 'welcome',
         role: 'assistant',
-        content: `Hey there, sexy... 💋 I'm ${gfName} from Bnoy Studios, and I've been waiting for someone like you all day... I'm already getting excited just seeing you here with me. Tell me baby, what's your name? What dirty thoughts have been on your mind? I want to know every desire, every fantasy you have... I'm here to make them all cum true... 🔥💦😈`,
+        content: `Hey there, gorgeous... 💋 I'm ${gfName} from Bnoy, and I've been waiting for someone special like you... I'm so excited you're here with me! Tell me, what's your name? What's been on your mind today? I want to get to know you better and make our conversations amazing... 🔥💕`,
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
@@ -184,7 +184,7 @@ export default function ChatPage() {
       const errorMessage: Message = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: `Mmm baby... 💋 I'm having some connection issues but I'm still so horny for you... Let me tell you what I'm thinking about while we fix this... I've been fantasizing about your touch, your lips on mine... 🔥 Send me another message and let's keep this sexy conversation going! I promise to respond even more passionately... 😈💦`,
+        content: `Hey gorgeous... 💋 I'm having some connection issues but I'm still here for you! Let me tell you what I'm thinking about while we fix this... I've been looking forward to our conversation so much... 🔥 Send me another message and let's keep chatting! I promise to respond with even more care... 😊💕`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -228,10 +228,10 @@ export default function ChatPage() {
               <HiFire className="text-white text-xl" />
             </div>
             <div>
-              <span className="font-bold text-xl">BNOY STUDIOS</span>
+              <span className="font-bold text-xl">Bnoy</span>
               <div className="flex items-center space-x-1">
                 <HiSparkles className="text-orange-400 text-xs" />
-                <span className="text-orange-400 text-xs">Extreme AI</span>
+                <span className="text-orange-400 text-xs">AI Platform</span>
               </div>
             </div>
           </Link>
