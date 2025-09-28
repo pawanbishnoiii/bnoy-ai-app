@@ -1,0 +1,61 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heartGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b"/>
+      <stop offset="100%" style="stop-color:#ff8e53"/>
+    </linearGradient>
+    <linearGradient id="heartGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </linearGradient>
+    <linearGradient id="heartGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626"/>
+      <stop offset="100%" style="stop-color:#be185d"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Large central heart -->
+  <g transform="translate(200,150)">
+    <path d="M0,10 C0,-10 -20,-20 -30,-10 C-40,0 -30,20 0,40 C30,20 40,0 30,-10 C20,-20 0,-10 0,10 Z" fill="url(#heartGradient1)" opacity="0.8">
+      <animateTransform attributeName="transform" type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Floating hearts -->
+  <g opacity="0.6">
+    <path d="M50,50 C50,40 40,30 30,30 C20,30 10,40 10,50 C10,60 30,80 30,80 C30,80 50,60 50,50 Z" fill="url(#heartGradient2)">
+      <animateTransform attributeName="transform" type="translate" values="0,0; 10,-20; 0,0" dur="4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <g opacity="0.5">
+    <path d="M350,80 C350,70 340,60 330,60 C320,60 310,70 310,80 C310,90 330,110 330,110 C330,110 350,90 350,80 Z" fill="url(#heartGradient3)">
+      <animateTransform attributeName="transform" type="translate" values="0,0; -15,-10; 0,0" dur="3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <g opacity="0.4">
+    <path d="M80,200 C80,190 70,180 60,180 C50,180 40,190 40,200 C40,210 60,230 60,230 C60,230 80,210 80,200 Z" fill="url(#heartGradient1)">
+      <animateTransform attributeName="transform" type="translate" values="0,0; 5,-15; 0,0" dur="3.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <g opacity="0.3">
+    <path d="M320,220 C320,210 310,200 300,200 C290,200 280,210 280,220 C280,230 300,250 300,250 C300,250 320,230 320,220 Z" fill="url(#heartGradient2)">
+      <animateTransform attributeName="transform" type="translate" values="0,0; -8,-12; 0,0" dur="2.8s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Sparkles -->
+  <g opacity="0.7">
+    <polygon points="100,30 102,35 107,35 103,38 105,43 100,40 95,43 97,38 93,35 98,35" fill="#fbbf24">
+      <animateTransform attributeName="transform" type="rotate" values="0 100 35;360 100 35" dur="4s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+  
+  <g opacity="0.6">
+    <polygon points="300,50 302,55 307,55 303,58 305,63 300,60 295,63 297,58 293,55 298,55" fill="#f59e0b">
+      <animateTransform attributeName="transform" type="rotate" values="0 300 55;360 300 55" dur="3s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+</svg>

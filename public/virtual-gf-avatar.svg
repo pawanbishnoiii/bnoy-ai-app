@@ -1,0 +1,66 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffdbcc"/>
+      <stop offset="100%" style="stop-color:#f4c2a1"/>
+    </linearGradient>
+    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5a3c"/>
+      <stop offset="50%" style="stop-color:#d4a574"/>
+      <stop offset="100%" style="stop-color:#f4c2a1"/>
+    </linearGradient>
+    <linearGradient id="lipsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b"/>
+      <stop offset="100%" style="stop-color:#ff8e53"/>
+    </linearGradient>
+    <radialGradient id="eyeGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="70%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Face -->
+  <ellipse cx="100" cy="110" rx="55" ry="65" fill="url(#skinGradient)" stroke="none"/>
+  
+  <!-- Hair -->
+  <path d="M45 85 Q50 40 100 45 Q150 40 155 85 Q155 70 150 60 Q140 45 100 40 Q60 45 50 60 Q45 70 45 85 Z" fill="url(#hairGradient)"/>
+  <ellipse cx="100" cy="75" rx="60" ry="35" fill="url(#hairGradient)"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="85" cy="95" rx="8" ry="12" fill="url(#eyeGradient)"/>
+  <ellipse cx="115" cy="95" rx="8" ry="12" fill="url(#eyeGradient)"/>
+  <ellipse cx="85" cy="93" rx="3" ry="4" fill="white"/>
+  <ellipse cx="115" cy="93" rx="3" ry="4" fill="white"/>
+  
+  <!-- Eyebrows -->
+  <path d="M76 82 Q85 80 90 82" stroke="#8b5a3c" stroke-width="2" fill="none"/>
+  <path d="M110 82 Q115 80 124 82" stroke="#8b5a3c" stroke-width="2" fill="none"/>
+  
+  <!-- Nose -->
+  <ellipse cx="100" cy="105" rx="2" ry="3" fill="#f4c2a1"/>
+  
+  <!-- Lips -->
+  <ellipse cx="100" cy="125" rx="12" ry="6" fill="url(#lipsGradient)"/>
+  <path d="M88 125 Q100 120 112 125" stroke="none" fill="url(#lipsGradient)"/>
+  
+  <!-- Blush -->
+  <ellipse cx="70" cy="105" rx="8" ry="5" fill="#ff9999" opacity="0.3"/>
+  <ellipse cx="130" cy="105" rx="8" ry="5" fill="#ff9999" opacity="0.3"/>
+  
+  <!-- Hearts floating around -->
+  <g opacity="0.6">
+    <path d="M30 50 C30 45, 35 40, 40 40 C45 40, 50 45, 50 50 C50 55, 40 65, 40 65 C40 65, 30 55, 30 50 Z" fill="#ff6b9d"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 5,-10; 0,0" dur="3s" repeatCount="indefinite"/>
+  </g>
+  
+  <g opacity="0.4">
+    <path d="M160 60 C160 55, 165 50, 170 50 C175 50, 180 55, 180 60 C180 65, 170 75, 170 75 C170 75, 160 65, 160 60 Z" fill="#ff8e53"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; -8,-15; 0,0" dur="4s" repeatCount="indefinite"/>
+  </g>
+  
+  <g opacity="0.5">
+    <path d="M25 120 C25 115, 30 110, 35 110 C40 110, 45 115, 45 120 C45 125, 35 135, 35 135 C35 135, 25 125, 25 120 Z" fill="#ec4899"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 10,-5; 0,0" dur="2.5s" repeatCount="indefinite"/>
+  </g>
+</svg>

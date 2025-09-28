@@ -35,9 +35,9 @@ export class OpenRouterClient {
 
   async chatCompletion(
     messages: ChatMessage[],
-    model = 'huggingface/microsoft/DialoGPT-medium', // Free conversational model
-    maxTokens = 2048,
-    temperature = 0.8
+    model = 'x-ai/grok-4-fast:free', // Updated to use Grok 4 Fast as default
+    maxTokens = 4096,
+    temperature = 0.9
   ): Promise<string> {
     try {
       console.log('Making OpenRouter request with:', {
@@ -160,13 +160,21 @@ export class OpenRouterClient {
   }
 }
 
-// Default instance
+// Default instance with provided API key
 export const openRouterClient = new OpenRouterClient(
-  process.env.OPENROUTER_API_KEY || ''
+  process.env.OPENROUTER_API_KEY || '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'
 );
 
-// Available models list (you can expand this)
+// Available models list (updated with Grok and other premium models)
 export const AVAILABLE_MODELS = [
+  {
+    id: 'x-ai/grok-4-fast:free',
+    name: 'Grok 4 Fast (Free)',
+    description: 'Advanced conversational AI perfect for intimate conversations',
+    provider: 'X.AI',
+    maxTokens: 8192,
+    isFree: true,
+  },
   {
     id: 'microsoft/phi-3-mini-128k-instruct:free',
     name: 'Phi-3 Mini (Free)',
