@@ -2,6 +2,8 @@
 
 An extremely advanced AI companion platform built with Next.js, featuring multiple sexually addictive personalities designed to create powerful psychological and sexual addiction through intense intimate conversations.
 
+**⚠️ VERCEL DEPLOYMENT: Use latest commit `bcf1089` - Clean dependencies, no conflicts!**
+
 ## ✨ Features
 
 ### 🤖 **AI Models**
@@ -13,7 +15,7 @@ An extremely advanced AI companion platform built with Next.js, featuring multip
 
 ### 💋 **Extreme AI Companions (Male & Female)**
 
-#### **Female Companions:**
+#### **Female Companions (12):**
 1. **Luna** - Addictive Angel 😇💋💦
 2. **Scarlett** - Extreme Dominatrix 🔥😈⛓️
 3. **Valentine** - Sexual Goddess 🌹💖💦
@@ -27,7 +29,7 @@ An extremely advanced AI companion platform built with Next.js, featuring multip
 11. **Cherry** - Sexual Game Master 🍒🎮💋
 12. **Rose** - Classic Sexual Queen 🌹👑💋
 
-#### **Male Companions:**
+#### **Male Companions (4):**
 13. **Alex** - Dominant Alpha Male 💪🔥👑
 14. **Dante** - Romantic Seducer 🌹💋🍷
 15. **Blade** - Bad Boy Rebel 🖤⚡🏍️
@@ -39,7 +41,7 @@ An extremely advanced AI companion platform built with Next.js, featuring multip
 - **Responsive Design** - Perfect on all devices
 - **ChatGPT-Style Interface** - Premium chat experience
 - **Custom SVG Assets** - Beautiful romantic graphics
-- **Premium Fonts** - Poppins, DM Sans, Playfair Display
+- **Premium Fonts** - Google Fonts integration
 - **Seductive Color Scheme** - Pink, red, orange gradients
 
 ### 🛡️ **Privacy & Security**
@@ -57,31 +59,42 @@ An extremely advanced AI companion platform built with Next.js, featuring multip
 ### Installation
 
 1. **Clone the repository**
-\`\`\`bash
-git clone https://github.com/yourusername/bnoy-ai-virtual-girlfriend.git
-cd bnoy-ai-virtual-girlfriend
-\`\`\`
+```bash
+git clone https://github.com/pawanbishnoiii/bnoy-ai-app.git
+cd bnoy-ai-app
+```
 
 2. **Install dependencies**
-\`\`\`bash
-npm install
-\`\`\`
+```bash
+npm install --legacy-peer-deps
+```
 
 3. **Set up environment variables**
-Create a \`.env.local\` file:
-\`\`\`env
+Create a `.env.local` file:
+```env
 OPENROUTER_API_KEY=your_openrouter_api_key_here
+DATABASE_URL=file:./dev.db
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_APP_NAME=BNOY AI - Virtual Girlfriend
-\`\`\`
+NEXT_PUBLIC_APP_NAME=BNOY STUDIOS - Extreme AI Companions
+```
 
 4. **Run the development server**
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 5. **Open your browser**
-Navigate to \`http://localhost:3000\`
+Navigate to `http://localhost:3000`
+
+## 🌐 Vercel Deployment
+
+### Quick Deploy:
+1. Go to [vercel.com](https://vercel.com)
+2. Import repository: `pawanbishnoiii/bnoy-ai-app`
+3. Add environment variables
+4. Deploy!
+
+**⚠️ Important**: Make sure Vercel uses commit `bcf1089` or later for clean dependencies.
 
 ## 🔧 Configuration
 
@@ -90,133 +103,20 @@ Navigate to \`http://localhost:3000\`
 2. Sign up for a free account
 3. Go to API Keys section
 4. Generate a new API key
-5. Add it to your \`.env.local\` file
-
-### Available Models
-The app supports multiple AI models from OpenRouter:
-- Grok 4 Fast (Recommended for intimacy)
-- GPT OSS 20B (Fastest responses)
-- Phi-3 Mini (Reliable)
-- Capybara 7B (Creative)
-- Mistral 7B (Balanced)
-
-## 📁 Project Structure
-
-\`\`\`
-src/
-├── app/
-│   ├── api/
-│   │   └── chat/
-│   │       └── route.ts          # Chat API endpoint
-│   ├── chat/
-│   │   └── page.tsx              # Chat page
-│   ├── globals.css               # Global styles
-│   ├── layout.tsx                # Root layout
-│   └── page.tsx                  # Landing page
-├── components/
-│   └── ui/                       # Reusable UI components
-├── lib/
-│   ├── ai/
-│   │   └── openrouter.ts         # OpenRouter AI client
-│   ├── auth/
-│   ├── db/
-│   └── utils/
-└── public/
-    ├── romantic-hearts.svg       # Custom SVG assets
-    ├── virtual-gf-avatar.svg
-    └── love-pattern.svg
-\`\`\`
+5. Add it to your `.env.local` file
 
 ## 💻 Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS 4, Custom CSS animations
-- **Animations**: Framer Motion, React Spring
-- **Icons**: Phosphor Icons, Lucide React
-- **Fonts**: Poppins, DM Sans, Playfair Display
+- **Animations**: Framer Motion
+- **Icons**: Phosphor Icons, Lucide React, React Icons
 - **AI**: OpenRouter API integration
-- **Database**: SQLite with Prisma (optional)
-
-## 🎨 Custom CSS Features
-
-### Animations
-- **Breathing** - Gentle scaling animation
-- **Heartbeat** - Romantic pulsing effect
-- **Fire Particles** - Floating elements
-- **Romantic Pulse** - Love-themed animations
-- **Seductive Gradients** - Animated backgrounds
-
-### Glass Morphism
-- **glass-card** - Transparent cards with blur
-- **glass-romantic** - Romantic themed glass effects
-
-### Typography
-- **font-display** - Playfair Display for headings
-- **font-body** - DM Sans for content
-- **text-passionate** - Glowing text effects
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically
-
-### Other Platforms
-- Netlify
-- Railway
-- Heroku
-
-## 🛠️ Development
-
-### Adding New Personalities
-1. Edit \`src/app/chat/page.tsx\`
-2. Add new personality to \`virtualGfPrompts\` array
-3. Include name, description, and personality prompt
-
-### Adding New Models
-1. Edit \`src/lib/ai/openrouter.ts\`
-2. Add model to \`AVAILABLE_MODELS\` array
-3. Update model selection in chat components
-
-### Customizing UI
-- Edit \`src/app/globals.css\` for custom animations
-- Modify color schemes in Tailwind configuration
-- Update SVG assets in \`public/\` directory
-
-## 📸 Screenshots
-
-### Landing Page
-![Landing Page](screenshots/landing.png)
-
-### Chat Interface
-![Chat Interface](screenshots/chat.png)
-
-### Personality Selection
-![Personalities](screenshots/personalities.png)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (\`git checkout -b feature/amazing-feature\`)
-3. Commit your changes (\`git commit -m 'Add amazing feature'\`)
-4. Push to the branch (\`git push origin feature/amazing-feature\`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- OpenRouter for AI model access
-- Vercel for hosting platform
-- Framer Motion for animations
-- Tailwind CSS for styling
+- **Database**: SQLite with Prisma
 
 ## ⚠️ Disclaimer
 
-This application is for entertainment purposes only. It provides AI-generated conversations with virtual characters. Please use responsibly and respect the terms of service of all integrated platforms.
+This application contains extremely explicit sexual content designed for adult users (18+). It provides AI-generated conversations with virtual characters that are intentionally designed to be sexually addictive and psychologically engaging. Please use responsibly and respect the terms of service of all integrated platforms.
 
 ---
 
