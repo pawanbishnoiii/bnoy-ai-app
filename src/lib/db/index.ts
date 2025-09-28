@@ -16,6 +16,9 @@ export async function createUser(username: string, email?: string) {
       username,
       email,
     },
+    include: {
+      chats: true,
+    },
   });
 }
 
