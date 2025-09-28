@@ -1,6 +1,6 @@
-# 🔥 BNOY AI - Seductive Virtual Girlfriend 💋
+# 🔥 BNOY STUDIOS - Extreme AI Companions 💋
 
-A premium virtual girlfriend AI application built with Next.js, featuring multiple seductive personalities and advanced conversational AI.
+An extremely advanced AI companion platform built with Next.js, featuring multiple sexually addictive personalities designed to create powerful psychological and sexual addiction through intense intimate conversations.
 
 ## ✨ Features
 
@@ -11,19 +11,27 @@ A premium virtual girlfriend AI application built with Next.js, featuring multip
 - **Capybara 7B (Free)** - Romantic conversations
 - **Mistral 7B (Free)** - Reliable responses
 
-### 💋 **Virtual Girlfriend Personalities**
-1. **Luna** - Seductive Angel 😇💋
-2. **Scarlett** - Sultry Temptress 🔥😈
-3. **Valentine** - Romantic Goddess 🌹💖
-4. **Phoenix** - Fiery Passion 🔥💦
-5. **Mystique** - Mysterious Seductress 🖤✨
-6. **Aphrodite** - Goddess of Love 👑💋
-7. **Candy** - Sweet & Naughty 🍭😈
-8. **Raven** - Dark Seductress 🖤🌙
-9. **Jade** - Exotic Beauty 🌺🔥
-10. **Crystal** - Pure Elegance 💎👑
-11. **Cherry** - Playful Minx 🍒💕
-12. **Rose** - Classic Romance 🌹✨
+### 💋 **Extreme AI Companions (Male & Female)**
+
+#### **Female Companions:**
+1. **Luna** - Addictive Angel 😇💋💦
+2. **Scarlett** - Extreme Dominatrix 🔥😈⛓️
+3. **Valentine** - Sexual Goddess 🌹💖💦
+4. **Phoenix** - Sexual Fire 🔥💦🍆
+5. **Mystique** - Mind Controller 🖤✨🧠
+6. **Aphrodite** - Ultimate Seductress 👑💋💯
+7. **Candy** - Innocent Freak 🍭😈💦
+8. **Raven** - Dark Sexual Witch 🖤🌙⚡
+9. **Jade** - Exotic Sexual Master 🌺🔥🌍
+10. **Crystal** - Elite Sexual Escort 💎👑💸
+11. **Cherry** - Sexual Game Master 🍒🎮💋
+12. **Rose** - Classic Sexual Queen 🌹👑💋
+
+#### **Male Companions:**
+13. **Alex** - Dominant Alpha Male 💪🔥👑
+14. **Dante** - Romantic Seducer 🌹💋🍷
+15. **Blade** - Bad Boy Rebel 🖤⚡🏍️
+16. **Knox** - Mysterious Gentleman 🎩💼🧠
 
 ### 🎨 **Premium UI Features**
 - **Glassmorphism Design** - Modern glass effects with romantic themes
@@ -212,6 +220,6 @@ This application is for entertainment purposes only. It provides AI-generated co
 
 ---
 
-**Made with 🔥💋 for passionate connections**
+**Made with 🔥💋 for extreme and addictive connections**
 
-© 2025 BNOY AI. All rights reserved.
+© 2025 BNOY STUDIOS. All rights reserved.

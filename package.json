@@ -1,14 +1,14 @@
 {
-  "name": "bnoy-ai-virtual-girlfriend",
-  "version": "1.0.0",
-  "description": "Premium virtual girlfriend AI application with seductive personalities",
+  "name": "bnoy-studios-extreme-ai",
+  "version": "2.0.0",
+  "description": "Extreme AI companion platform with sexually addictive personalities designed for psychological and sexual addiction",
   "private": true,
-  "keywords": ["ai", "virtual-girlfriend", "chat", "openrouter", "nextjs", "seductive", "romance"],
-  "author": "BNOY AI Team",
+  "keywords": ["ai", "extreme", "sexual", "addictive", "chat", "openrouter", "nextjs", "companions", "bnoy-studios"],
+  "author": "BNOY STUDIOS Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/bnoy-ai-virtual-girlfriend.git"
+    "url": "https://github.com/yourusername/bnoy-studios-extreme-ai.git"
   },
   "scripts": {
     "dev": "next dev --turbopack",

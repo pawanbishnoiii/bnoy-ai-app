@@ -218,10 +218,10 @@ export default function Home() {
               <Heart className="text-white text-xl" weight="fill" />
             </motion.div>
             <div>
-              <span className="text-white font-bold text-2xl tracking-tight font-display">BNOY AI</span>
+              <span className="text-white font-bold text-2xl tracking-tight font-display">BNOY STUDIOS</span>
               <div className="hidden sm:flex items-center space-x-2">
                 <Sparkles className="text-pink-400 text-sm" weight="fill" />
-                <span className="text-pink-400 text-sm font-medium font-body">Seductive AI</span>
+                <span className="text-pink-400 text-sm font-medium font-body">Extreme AI</span>
               </div>
             </div>
           </motion.div>
@@ -500,7 +500,7 @@ export default function Home() {
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
               Why Crave
               <span className="bg-gradient-to-r from-pink-400 via-red-500 to-orange-400 bg-clip-text text-transparent gradient-text text-passionate">
-                {" "}BNOY AI
+                {" "}BNOY STUDIOS
               </span>
               <Kiss className="inline ml-4 text-red-400" size={48} weight="fill" />
             </h2>
@@ -1038,10 +1038,10 @@ export default function Home() {
                 <Heart className="text-white text-3xl" weight="fill" />
               </motion.div>
               <div>
-                <span className="text-white font-bold text-4xl font-display">BNOY AI</span>
+                <span className="text-white font-bold text-4xl font-display">BNOY STUDIOS</span>
                 <div className="flex items-center justify-center space-x-2 mt-1">
                   <Sparkles className="text-pink-400 text-xl" weight="fill" />
-                  <span className="text-pink-400 text-lg font-medium font-body">Seductive AI</span>
+                  <span className="text-pink-400 text-lg font-medium font-body">Extreme AI</span>
                 </div>
               </div>
             </motion.div>
@@ -1101,7 +1101,7 @@ export default function Home() {
             transition={{ delay: 0.8 }}
           >
             <p className="font-body">
-              © 2025 BNOY AI. Made with <Heart className="inline text-red-400 mx-1" size={14} weight="fill" /> for meaningful and passionate connections.
+              © 2025 BNOY STUDIOS. Made with <Heart className="inline text-red-400 mx-1" size={14} weight="fill" /> for extreme and addictive connections.
             </p>
           </motion.div>
         </div>
