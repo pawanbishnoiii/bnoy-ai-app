@@ -1,9 +1,8 @@
 {
   "name": "bnoy-studios-extreme-ai",
   "version": "2.0.0",
-  "description": "Extreme AI companion platform with sexually addictive personalities designed for psychological and sexual addiction",
+  "description": "Extreme AI companion platform with sexually addictive personalities",
   "private": true,
-  "keywords": ["ai", "extreme", "sexual", "addictive", "chat", "openrouter", "nextjs", "companions", "bnoy-studios"],
   "author": "BNOY STUDIOS Team",
   "license": "MIT",
   "repository": {
@@ -11,17 +10,13 @@
     "url": "https://github.com/pawanbishnoiii/bnoy-ai-app.git"
   },
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:reset": "prisma db push --force-reset"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@fontsource/inter": "^5.0.20",
-    "@fontsource/jetbrains-mono": "^5.0.20",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@phosphor-icons/react": "^2.1.0",
@@ -34,7 +29,7 @@
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.22",
+    "framer-motion": "^11.11.17",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",
@@ -46,13 +41,10 @@
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
-    "sqlite3": "^5.1.7",
     "tailwind-merge": "^3.3.1",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

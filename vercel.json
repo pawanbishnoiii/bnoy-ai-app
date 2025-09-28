@@ -2,5 +2,24 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "npm install"
+  "installCommand": "npm install --legacy-peer-deps",
+  "devCommand": "npm run dev",
+  "env": {
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "DATABASE_URL": "file:./production.db",
+    "NEXT_PUBLIC_APP_URL": "https://bnoy-studios.vercel.app",
+    "NEXT_PUBLIC_APP_NAME": "BNOY STUDIOS - Extreme AI Companions"
+  },
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "regions": ["iad1"],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
